@@ -1,0 +1,24 @@
+﻿@model  IEnumerable<Niqiu.Core.Domain.Questions.Comment>
+
+@foreach (var item in Model)
+{
+    <div class="plbl">
+        <a href="@Url.Action("Detail", "Firends", new { userid = item.User.Id })">
+            <img src="@item.User.ImgUrl" class="pltx">
+        </a>
+        <div class="plright">
+            <div class="plrbox">
+                <div class="plrboxl">
+                    <div class="plname">@item.User.Username</div>
+                    <div class="pltime">@item.SimpleTime()</div>
+                </div>
+                <div class="plrboxr">
+                    @*<span>3</span>
+                        <img src="/images/xqico3.png" class="plrico plrico1">
+                        <img src="/images/mtico.png" class="plrico plrico2 none">*@
+                </div>
+            </div>
+            <div class="plrtxt">@Html.Raw(item.Content)</div>
+        </div>
+    </div>
+}

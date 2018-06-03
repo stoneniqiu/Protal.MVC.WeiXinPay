@@ -1,0 +1,118 @@
+﻿@model Niqiu.Core.Domain.User.User
+
+@{
+    ViewBag.Title = "我的资料";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .zlbl{width: 100%;padding: 0 .5rem;margin-bottom: 10px;}
+</style>
+<div class="page" id="userdetail">
+    @Html.Partial("m_header")
+    <div class="content">
+        <div class="zlbox">
+            <div class="zlbl">
+                <span>头&nbsp;&nbsp;像</span>
+                <div class="zltxbl">
+                    <img id="preview" src="@Model.ImgUrl" alt=""/>
+                </div>
+            </div>
+            <div class="zlbl">
+                <span>昵&nbsp;&nbsp;称：</span>
+                <input type="text" id="nickname" value="@Model.Username" placeholder="填写昵称"/>
+            </div>
+            <div class="zlbl">
+                <span>手机号码：</span>
+@if (!string.IsNullOrWhiteSpace(Model.RealName))
+{
+    <input type="number" readonly="readonly" id="mobile" value="@Model.Mobile" placeholder="手机号码"/>
+
+}
+else
+{
+                <input type="number" id="mobile" value="@Model.Mobile" placeholder="手机号码"/>
+
+}
+            </div>
+            @*<div class="zlbl">
+                <span>真实姓名：</span>
+                @if (!string.IsNullOrWhiteSpace(Model.RealName))
+                {
+                    <input type="text" id="realname" readonly="readonly" value="@Model.RealName" placeholder="真实姓名填写，绑定后不可更改"/>
+                }
+                else
+                {
+                <input type="text" id="realname" value="@Model.RealName" placeholder="真实姓名填写，绑定后不可更改"/>
+                }
+
+            </div>
+            <div class="zlbl">
+                <span>身份证号：</span>
+                 @if (!string.IsNullOrWhiteSpace(Model.IdCared))
+                 {
+                     <input type="text" readonly="readonly" id="idcard" value="@Model.IdCared" placeholder="真实身份证填写，绑定后不可更改"/>
+                 }
+                 else
+                 {
+                <input type="text" id="idcard" value="@Model.IdCared" placeholder="真实身份证填写，绑定后不可更改"/>
+                 }
+            </div>*@
+            @if (string.IsNullOrWhiteSpace(Model.Mobile))
+            {
+                <div style="font-size: small;text-align: center;">请填写手机号码完善资料</div>
+            }
+            <input type="button" value="保存" id="wdzlbt" class="zlbtn"/>
+            <input type="hidden" value="@ViewBag.Url" id="rurl" />
+        </div>
+    </div>
+    </div>
+<script>
+    tools.editeWxTitle("我的资料");
+    $.fileUpload({
+        filebutton: ".zltxbl", uploadComplete: function (str) {
+            try {
+                var res = JSON.parse(str);
+                if (res.Success === true) {
+                    $(".zltxbl img").attr("src", res.SaveName);
+                }
+            } catch (e) {
+
+            }
+        }
+    });
+    $(document).off("click", "#wdzlbt");
+    $(document).on("click", "#wdzlbt", function () {
+        var name = $.trim($("#nickname").val());
+        if (name.length < 2) {
+            $.toast("用户名不能少于2个字符");
+            return;
+        }
+        var mobile = $.trim($("#mobile").val());
+        if (mobile.length < 11) {
+            $.toast("请输入正确的手机号");
+            return;
+        }
+        var idcard = $("#idcard").val();
+        var img = $("#preview").attr("src");
+        var realname = $("#realname").val();
+        var backUrl = $("#rurl").val() || '/home/index';
+        console.log(backUrl);
+        $.post("/UserCenter/Wdzl", { img: img, name: name, mobile: mobile, realname: realname,idcard:idcard }, function (data) {
+            if (data.IsSuccess === undefined) {
+                client.loginAlert();
+            }
+            if (data.IsSuccess === true) {
+                $.toast("修改成功");
+                setTimeout(function () {
+                    location.href = backUrl;
+                }, 1500);
+            } else {
+                // 回答错误 或其他
+                $.toast(data.Message);
+            }
+        });
+
+
+    });
+
+</script>

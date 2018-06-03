@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "菜单分析";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@Html.Partial("_adminMap")
+@model Portal.MVC.ViewModel.MeanChartModel
+<div class="container-fluid">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>@ViewBag.Title</h5>
+
+        </div>
+        <div class="widget-content nopadding">
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>菜单</th>
+                        <th>点击次数</th>
+                        <th>占比</th>
+                        <th>平均每天点击</th>
+                        <th>平均每人点击</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var list = Model.GetOrderList();
+                    }
+                    @foreach (var item in list)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.Count</td>
+                            <td>@item.Percent</td>
+                            <td>@item.PerDay</td>
+                            <td>@item.PerUser</td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="5">总记录:@list.Count()</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+
+
+        </div>
+        
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+                        <span class="icon"> <i class="icon-signal"></i> </span>
+                        <h5>线性图</h5>
+                    </div>
+                    <div class="widget-content">
+                        <div class="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>
+
+<script src="~/Content/Matrix_Admin/js/jquery.flot.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.flot.pie.min.js"></script>
+<script>
+    $.post('@Url.Action("MenuChartJson")', function (json) {
+        console.log(json);
+        admin.lineChartByDay(json, "每天点击数", "的点击数", $(".chart"));
+    });
+
+</script>
+

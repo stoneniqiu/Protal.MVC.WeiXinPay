@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "新的好友";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<FirendsNew>
+<div id="firendsNew" class="page">
+    @Html.Partial("m_header")
+    @Html.Partial("m_footer")
+    <div class="content">
+        @foreach (var item in Model)
+        {
+            <div class="hycon1">
+                <a class="hybox">
+                    <img src="@item.Firend.FirendUser.ImgUrl">
+                    <span>@item.Firend.FirendName</span>
+                    @if (item.Attentioned)
+                    {
+                        <div class="hygz1">已关注</div>
+                    }
+                    else
+                    {
+                        <div class="hygz" data-key="@item.Firend.FirendId">
+                            <img src="/images/xqgz.png" class="hyimg"/>
+                            关注
+                        </div>
+                        <div class="hygz1 none">已关注</div>    }
+                </a>
+
+            </div>
+        }
+    </div>
+</div>

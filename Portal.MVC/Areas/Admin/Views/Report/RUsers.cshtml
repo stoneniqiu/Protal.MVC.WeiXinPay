@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "被处理的用户";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+<style>
+    .imgbox {
+        max-width: 100px;
+        max-height: 150px;
+    }
+
+    td a {
+        cursor: pointer;
+    }
+
+    .linkbox {
+        padding: 10px;
+    }
+
+    .linkbox a {
+        color: #e9967a;
+    }
+</style>
+@model IEnumerable<Niqiu.Core.Domain.User.User>
+@Html.Partial("_adminMap")
+<div class="container-fluid">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>@ViewBag.Title</h5>
+
+        </div>
+        <div class="widget-content nopadding">
+            <div class="linkbox">
+                <a href="@Url.Action("RQs")">已被处理的谜题</a>
+                <a href="@Url.Action("RUsers")">已被处理的用户</a>
+            </div>
+
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>注册时间</th>
+                        <th>最后登录时间</th>
+                        <th>电话</th>
+                        <th>邮箱</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Username</td>
+                            <td>@item.SimpleTime()</td>
+                            <td>@item.LastActivityDateUtc</td>
+                            <td>
+                                @item.Mobile
+                            </td>
+                            <td>
+                                @item.Email
+                            </td>
+                            <td>
+                                <span class="recover btn btn-danger" data-id="@item.Id">恢复</span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">
+                            总记录:@Model.Count()
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>
+
+<script>
+    $(".recover").click(function() {
+        var id = $(this).data("id");
+        $.post('@Url.Action("SetUser")', { id: id, isillegal: false }, function() {
+            toastr.info("处理成功,该用户可以正常登录");
+            admin.delayReload();
+        });
+    })
+</script>
+

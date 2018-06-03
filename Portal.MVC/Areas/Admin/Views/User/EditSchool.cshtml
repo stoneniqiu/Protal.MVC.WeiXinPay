@@ -1,0 +1,51 @@
+﻿@using Portal.MVC.ViewModel
+@model Niqiu.Core.Domain.User.School
+
+@{
+    ViewBag.Title = "编辑学院";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+ 
+@Html.Partial("contentHeader", new ContentHeaderLink { Url = Url.Action("CreateSchool", "User"), Name = ViewBag.Title })
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon"><i class="icon-info-sign"></i></span>
+                    <h5>@ViewBag.Title</h5>
+                </div>
+                <div class="widget-content nopadding">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(n=>n.Id)
+
+                        <div class="editor-label">
+                            @Html.LabelFor(model => model.Name)
+                        </div>
+                        <div class="editor-field">
+                            @Html.EditorFor(model => model.Name)
+                            @Html.ValidationMessageFor(model => model.Name)
+                        </div>
+
+                        <p>
+                            <input type="submit" class="btn btn-success" value="确定" />
+                            @Html.Partial("info")
+                        </p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    admin.setActive("usermanage");
+</script>

@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "提现列表";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    
+}
+
+@Html.Partial("_adminMap")
+@using Niqiu.Core.Helpers
+@model IEnumerable<Niqiu.Core.Domain.Payments.Order>
+<div class="container-fluid">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>@ViewBag.Title</h5>
+
+        </div>
+        <div class="widget-content nopadding">
+
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户名</th>
+                        <th>钱包金额</th>
+                        <th>提现金额</th>
+                        <th>开户行</th>
+                        <th>开户姓名</th>
+                        <th>银行卡号</th>
+                        <th>申请时间</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.User.Username</td>
+                            <td></td>
+                            <td>@item.Amount</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>@item.SimpleTime()</td>
+                            <td>@Html.EnumToText(item.OrderState)</td>
+                            <td><a class="btn btn-primary">审核</a></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            总记录:@Model.Count()
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>

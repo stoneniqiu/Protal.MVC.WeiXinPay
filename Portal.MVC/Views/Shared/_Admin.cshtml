@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/bootstrap-responsive.min.css" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/matrix-style.css" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/matrix-media.css" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/uniform.css" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/select2.css" />
+    <link href="~/Content/Matrix_Admin/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Content/Matrix_Admin/css/jquery.gritter.css" />
+    <link href="~/Content/toastr/toastr.min.css" rel="stylesheet" />
+    <title>@ViewBag.Title</title>
+    <script src="~/Content/Matrix_Admin/js/excanvas.min.js"></script>
+    <script src="~/Content/Matrix_Admin/js/jquery.min.js"></script>
+    <script src="~/Content/Matrix_Admin/js/bootstrap.min.js"></script>
+    <script src="~/Content/Matrix_Admin/js/matrix.js"></script>
+    <script src="~/Content/toastr/toastr.min.js"></script>
+
+    <script src="~/Content/plupload-2.1.8/js/plupload.full.min.js"></script>
+    <script src="~/Content/Js/admin.js"></script>
+    <script src="~/Content/ckeditor/ckeditor.js"></script>
+
+    <style>
+        table tbody tr td:first-child {
+            text-align: center;
+        }
+
+        .controls label, input[type='checkbox'] {
+            display: inline-block !important;
+        }
+
+            .controls label:hover {
+                color: black;
+            }
+
+        .deleta:hover {
+            color: red;
+        }
+
+        .field-validation-error,.validation-summary-errors {
+            color: red;
+        }
+
+        .editor-label {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .editor-field {
+            padding-left: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eeeeee;
+        }
+        .deleta{cursor: pointer;}
+    </style>
+</head>
+<body>
+    <!--Header-part-->
+    <div id="header">
+        <h1><a href="#">Matrix Admin</a></h1>
+    </div>
+
+    <!--close-Header-part-->
+    <!--top-Header-menu-->
+    <div id="user-nav" class="navbar navbar-inverse">
+        <ul class="nav">
+            <li class="dropdown" id="profile-messages">
+                <a title="" href="#" data-toggle="dropdown" data-target="#profile-messages" class="dropdown-toggle"><i class="icon icon-user"></i><span class="text">欢迎  
+                          @if (Request.IsAuthenticated)
+                          {
+                              <text>
+                              <span>@User.Identity.Name</span>
+                              </text>
+                          }
+                </span><b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#"><i class="icon-user"></i>我的资料</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/Account/LogOff"><i class="icon-key"></i>退出</a></li>
+                </ul>
+            </li>
+
+            <li class=""><a title="" href="/Account/LogOff"><i class="icon icon-share-alt"></i><span class="text">退出</span></a></li>
+        </ul>
+    </div>
+    <!--close-top-Header-menu-->
+    <!--close-top-Header-menu-->
+    <!--start-top-serch-->
+
+    <div id="search">
+        <input type="text" class="" placeholder="Search here..." />
+        <button type="submit" class="tip-bottom" title="Search"><i class="icon-search icon-white"></i></button>
+    </div>
+    <!--close-top-serch-->
+    <!--sidebar-menu-->
+    <div id="sidebar">
+
+        <ul>
+            <li id="home" class=""><a href="@Url.Action("Index", "Home")"><i class="icon icon-home"></i><span>控制面板</span></a> </li>
+         
+            <li id="roles" class="submenu">
+                <a href="#"><i class="icon icon-edit"></i><span>角色管理</span></a>
+                <ul>
+                    <li><a href="@Url.Action("Index","Role")">角色列表</a></li>
+                    <li><a href="@Url.Action("AddRole","Role")">添加角色</a></li>
+                </ul>
+            </li>
+            <li id="wallet" class="submenu">
+                <a href="#"><i class="icon icon-edit"></i><span>钱包管理</span></a>
+                <ul>
+                    <li><a href="@Url.Action("List","Wallet")">钱包管理</a></li>
+                    <li><a href="@Url.Action("ToCashList","Wallet")">提现列表</a></li>
+                    <li><a href="@Url.Action("RechargeList","Wallet")">充值记录</a></li>
+                    <li><a href="@Url.Action("RewardList","Wallet")">获奖记录</a></li>
+                    <li><a href="@Url.Action("OrderList","Wallet")">订单管理</a></li>
+                    <li><a href="@Url.Action("RewardBack","Wallet")">谜题返现管理</a></li>
+                </ul>
+            </li>
+
+            <li id="gongneng" class="submenu">
+                <a href="#"><i class="icon icon-edit"></i><span>功能</span></a>
+                <ul>
+                    <li><a href="@Url.Action("SendMessage","Msg")">群发功能</a></li>
+                    <li><a href="@Url.Action("Admins","Msg")">管理员列表</a></li>
+                    <li><a href="@Url.Action("AddAdmin", "Msg")">添加管理员</a></li>
+                </ul>
+            </li>
+            <li id="tongji" class="submenu">
+                <a href="#"><i class="icon icon-signal"></i><span>统计</span></a>
+                <ul>
+                    <li><a href="@Url.Action("UserChart","Charts")">用户分析</a></li>
+                    <li><a href="@Url.Action("MenuChart","Charts")">菜单分析</a></li>
+                    <li><a href="@Url.Action("QuestionChart","Charts")">谜题分析</a></li>
+                    <li><a href="@Url.Action("CapitalChart","Charts")">资金分析</a></li>
+                </ul>
+            </li>
+            <li id="manage" class="submenu">
+                <a href="#"><i class="icon icon-user-md"></i><span>管理</span></a>
+                <ul>
+                    <li><a href="@Url.Action("Index","Msg")">消息管理</a></li>
+                    <li><a href="@Url.Action("Index","User")">用户管理</a></li>
+                    <li><a href="@Url.Action("Index","Report")">举报管理</a></li>
+                    <li><a href="@Url.Action("Index","Qs")">谜题管理</a></li>
+                    <li><a href="@Url.Action("Comments","Qs")">评论管理</a></li>
+                </ul>
+            </li>
+         
+            
+        </ul>
+    </div>
+    <!--sidebar-menu-->
+
+    <div id="content" class="">
+        @RenderBody()
+    </div>
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+        window.onload = function () {
+            var pathname = location.pathname.substr(1);
+            var token;
+            if (pathname == "") {
+                token = "Home";
+            } else {
+                //var patt = new RegExp("[a-z]{1,}", "i");
+                token = pathname.split('/')[1] || "Home";
+            }
+            console.log(token);
+            switch (token) {
+                case "Home":
+                    admin.setActive("home");
+                    break;
+                case "User":
+                case "Fs":
+                case "Qs":
+                case "Report":
+                    admin.setActive("manage");
+                    break;
+                case "Wallet":
+                    admin.setActive("wallet");
+                    break;
+                case "Msg":
+                    admin.setActive("gongneng");
+                    break;
+                case "Charts":
+                    admin.setActive("tongji");
+                    break;
+                case "Role":
+                    admin.setActive("roles");
+                    break;
+            }
+        }
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "positionClass": "toast-top-full-width",
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "3000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        function success(str) {
+            toastr.success(str || "操作成功");
+        }
+
+        function error(str) {
+            toastr.warning(str || "操作失败");
+        }
+
+        function info(str) {
+            toastr.info(str);
+        }
+        $("th input:checkbox").click(function () {
+            var checkedStatus = this.checked;
+            var checkbox = $(this).parents('.widget-box').find('tr td:first-child input:checkbox');
+            checkbox.each(function () {
+                this.checked = checkedStatus;
+                if (checkedStatus == this.checked) {
+                    $(this).closest('.checker > span').removeClass('checked');
+                }
+                if (this.checked) {
+                    $(this).closest('.checker > span').addClass('checked');
+                }
+            });
+        });
+        // This function is called from the pop-up menus to transfer to
+        // a different page. Ignore if the value returned is a null string:
+        function goPage(newURL) {
+
+            // if url is empty, skip the menu dividers and reset the menu selection to default
+            if (newURL != "") {
+
+                // if url is "-", it is this page -- reset the menu:
+                if (newURL == "-") {
+                    resetMenu();
+                }
+                    // else, send page to designated URL
+                else {
+                    document.location.href = newURL;
+                }
+            }
+        }
+
+        // resets the menu selection upon entry to this page:
+        function resetMenu() {
+            document.gomenu.selector.selectedIndex = 2;
+        }
+    </script>
+</body>
+</html>

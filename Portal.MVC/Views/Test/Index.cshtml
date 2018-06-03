@@ -1,0 +1,42 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page">
+
+    <a id="fqbt" class="button button-primary">FinishQuestion</a>
+
+
+</div>
+
+<script>
+    function run(fun, time, interval) {
+        time = time || 100;
+        if (typeof fun == "function") {
+            for (var i = 0; i < time; i++) {
+                setTimeout(fun, interval || 0);
+            }
+        }
+    }
+
+    function finishQuestion() {
+        $.post("/Test/TestFinishQuestion", { qid: 4 }, function (data) {
+            console.log(data);
+        });
+    }
+
+    function finishQuestion1() {
+        $.post("/Test/TestFinishQuestionResp", { qid: 4 }, function (data) {
+            console.log(data);
+        });
+    }
+    function finishQuestion2() {
+        $.post("/Test/UsingFinishQuestion", { qid: 4 }, function (data) {
+            console.log(data);
+        });
+    }
+
+
+
+</script>

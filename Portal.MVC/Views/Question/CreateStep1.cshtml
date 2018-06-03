@@ -1,0 +1,121 @@
+﻿@model Niqiu.Core.Domain.Questions.Question
+
+@{
+    ViewBag.Title = "我要出题(1/2)";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div id="chuti1" class="page page-current">
+    @Html.Partial("m_header")
+    @Html.Partial("m_footer")
+    <div class="content" style="background: #f3f3f4;">
+        <div class="ctcon">
+            <div class="ctimg">
+                <img src="~/images/ctimg.png">
+                <span>添加谜题图片</span>
+            </div>
+            <div id="uplog" style="text-align: center;font-size: small"></div>
+            <a style="color: rgb(92, 153, 25); ">上传照片</a>
+        </div>
+        <div class="ctbtm">&nbsp;</div>
+       
+        <div class="ctimgbox">
+            <img  src="~/images/ctimg.png">
+            <div class="mtimgbtn">
+                <a  id="cancelImg11"class="fl">取消</a>
+                <a  id="ok" href="" class="fr">选取为谜题图片</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //隐藏预览图片的遮罩
+    //微信就走微信里面 是微信又是安卓 就走
+    if (/micromessenger/i.test(navigator.userAgent) && /android/i.test(navigator.userAgent)) {
+     var time = '@ViewBag.Share.timestamp';
+      wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '@ViewBag.Share.appId', // 必填，公众号的唯一标识
+        timestamp: parseInt(time), // 必填，生成签名的时间戳
+        nonceStr: '@ViewBag.Share.nonceStr', // 必填，生成签名的随机串
+        signature: '@ViewBag.Share.signature',// 必填，签名，见附录1
+          jsApiList: ["chooseImage", "previewImage", "uploadImage", "downloadImage"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      });
+        wx.ready(function() {
+            $(document).on("click", ".ctcon", function() {
+                wx.chooseImage({
+                    count: 1, // 默认9
+                    sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+                    sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+                    success: function (res) {
+                        var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                        uploadimg(localIds[0].toString());
+
+                    }
+                });
+            });
+            function uploadimg(lid) {
+                wx.uploadImage({
+                    localId: lid, // 需要上传的图片的本地ID，由chooseImage接口获得
+                    isShowProgressTips: 1, // 默认为1，显示进度提示
+                    success: function (res) {
+                        var serverId = res.serverId; // 返回图片的服务器端ID
+                        //alert(serverId);
+                        $.post("/Question/DownWxImage", { serverId: serverId }, function(res) {
+                            //alert(res.SaveName);
+                            if (res.Success === true) {
+                                $(".ctimgbox img").attr("src", res.SaveName);
+                                $(".ctimgbox #ok").attr("href", "/Question/CreateStep2Url?imgUrl=" + res.SaveName);
+                                $(document).on("click", "#cancelImg11", function() {
+                                    $(".ctimgbox").hide();
+                                    $("#footertabs").show();
+                                });
+                            }
+                            $(".ctimgbox").show();
+                        });
+                        //这个id需要发给服务端去下载
+
+                        //$(".ctimgbox img").attr("src", serverId);
+                        //$(".ctimgbox #ok").attr("href", "/Question/CreateStep2Url?imgUrl=" + serverId);
+                        //$(document).on("click", "#cancelImg11", function () {
+                        //    $(".ctimgbox").hide();
+                        //    $("#footertabs").show();
+                        //});
+                    }
+                });
+            }
+
+        });
+
+    } else {
+        $.fileUpload({
+            filebutton: ".ctcon",
+            uploadComplete: function (str) {
+                try {
+                    loaded(str);
+                } catch (e) {
+                }
+            },
+            onProgress: function (p) {
+                $("#uplog").html("正在上传" + p);
+                if (p == "100%") {
+                    setTimeout(function () {
+                        $("#uplog").html("");
+                    }, 1000);
+                }
+            }
+        });
+    }
+    function loaded(str) {
+        var res = JSON.parse(str);
+        if (res.Success === true) {
+            $(".ctimgbox img").attr("src", res.SaveName);
+            $(".ctimgbox #ok").attr("href", "/Question/CreateStep2Url?imgUrl=" + res.SaveName);
+            $(document).on("click", "#cancelImg11", function () {
+                $(".ctimgbox").hide();
+                $("#footertabs").show();
+            });
+        }
+        $(".ctimgbox").show();
+    }
+</script>

@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "用户分析";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@Html.Partial("_adminMap")
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        @*<div class="span6">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon"> <i class="icon-signal"></i> </span>
+                    <h5>Pie chart</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="pie"></div>
+                </div>
+            </div>
+        </div>*@
+        <div class="span12">
+            <div class="widget-box">
+                <div class="widget-title">
+                    <span class="icon"> <i class="icon-signal"></i> </span>
+                    <h5>柱状图</h5>
+                </div>
+                <div class="widget-content">
+                    <div class="bars"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="widget-box">
+                    <div class="widget-title">
+                        <span class="icon"> <i class="icon-signal"></i> </span>
+                        <h5>线性图</h5>
+                    </div>
+                    <div class="widget-content">
+                        <div class="chart"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="~/Content/Matrix_Admin/js/jquery.flot.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.flot.pie.min.js"></script>
+<script>
+    //var data = [];
+    //var series = Math.floor(Math.random() * 10) + 1;
+    //for (var i = 0; i < series; i++) {
+    //    data[i] = { label: "Series" + (i + 1), data: Math.floor(Math.random() * 100) + 1 }
+    //}
+
+    //var pie = $.plot($(".pie"), data, {
+    //    series: {
+    //        pie: {
+    //            show: true,
+    //            radius: 3 / 4,
+    //            label: {
+    //                show: true,
+    //                radius: 3 / 4,
+    //                formatter: function (label, series) {
+    //                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">' + label + '<br/>' + Math.round(series.percent) + '%</div>';
+    //                },
+    //                background: {
+    //                    opacity: 0.5,
+    //                    color: '#000'
+    //                }
+    //            },
+    //            innerRadius: 0.2
+    //        },
+    //        legend: {
+    //            show: false
+    //        }
+    //    }
+    //});
+
+
+    $.post('@Url.Action("DailyUser")', function (json) {
+        console.log(json);
+
+        var d1 = [];
+        var dates = [];
+
+        var fy = json.firstYear;
+        //for (var i = 0; i <= 10; i += 1) d1.push([i, parseInt(Math.random() * 30)]);
+        for (var i = 0; i < json.data.length; i++) {
+            d1.push([i, json.data[i].value]);
+            dates.push([i, json.data[i].Date]);
+        }
+
+        var data = new Array();
+        data.push({
+            data: d1,
+            bars: {
+                show: true,
+                barWidth: 0.4,
+                order: 1,
+            }
+        });
+
+
+        //Display graph
+        var bar = $.plot($(".bars"), data, {
+            legend: true, xaxis: {
+                ticks: dates
+            },
+        });
+        admin.lineChartByDay(json, "用户每天注册数", "月新增用户", $(".chart"));
+
+    });
+
+ 
+
+</script>

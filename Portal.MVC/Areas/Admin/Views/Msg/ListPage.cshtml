@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Niqiu.Core.Domain.Messages.Message>
+<table class="table table-bordered data-table">
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="header"><img src="@item.FromUser.ImgUrl" /></td>
+                <td>
+                    <span>@item.FromUser.Username</span>
+                </td>
+                <td>@item.Content</td>
+                <td>@item.SimpleTime()</td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4">总记录:@Model.Count()</td>
+        </tr>
+    </tfoot>
+</table>
+
+
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>

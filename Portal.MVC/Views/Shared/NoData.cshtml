@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "NoData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+       .wp h1{padding: 0;margin: 0;}
+      .top-nav li a:hover{text-decoration: none;}  
+</style>
+
+<div class="errbox">
+    <img src="/images/error.png">
+    <p>页面加载失败，休息一下先回到谜题首页吧</p>
+    <a href="@Url.Action("Classical","Home")" type="button" class="tsbtn tsbtn1">返回到首页</a>
+</div>

@@ -1,0 +1,204 @@
+﻿@{
+    ViewBag.Title = "我的消息";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Niqiu.Core.Domain.Messages
+@model Portal.MVC.Models.MessageCenterModel
+
+<div id="messages" class="page">
+    @Html.Partial("m_header")
+    @Html.Partial("m_footer")
+    <div class="content">
+        <div class="buttons-tab">
+            <a href="#tab1" id="infomessageTab" class="tab-link active button">关注提示</a>
+            <a href="#tab2" class="tab-link button">好友私信</a>
+            <a href="#tab3" id="systemmsgs" class="tab-link button">系统消息</a>
+        </div>
+        <div class="content-block">
+            <div class="tabs">
+                <div id="tab1" class="tab active">
+                    @foreach (var item in Model.InfoMessages)
+                    {
+                        if (item.Question != null)
+                        {
+                            <div class="xxblock xxgzbox" data-key="@item.Id" data-read="@item.IsRead">
+                                <div class="xximg">
+                                    @if (!item.IsRead)
+                                    {
+                                        <span>&nbsp;</span>
+                                    }
+                                    <img src="@item.FromUser.ImgUrl">
+                                </div>
+                                <div class="delete-block" data-id="@item.Id">&times;</div>
+                                <div class="xxright">
+                                    <a href="@Url.Action("DetailByGuid", "Home", new { guid = item.RelateGuid,id=item.Id })" class="">
+                                        <div class="xxrtop">
+                                            <h2>@item.Question.User.Username</h2>
+                                            <span class="time">@item.Question.SimpleTime()</span>
+                                        </div>
+                                        <div class="xxrbtm">
+                                            <p>你的好友发布新的谜题赏金<span class="col"><span>@item.Question.Reward</span>元</span></p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        }
+
+                    }
+
+                </div>
+                <div id="tab2" class="tab">
+
+                    @foreach (var item in Model.PrivateMessage)
+                    {
+                        var toid = item.ToUserId;
+                        if (toid == Model.User.Id)
+                        {
+                            toid = item.FromUserId;
+                        }
+
+                        <div class="xxblock xxgzbox">
+                            <div class="xximg">
+                                <img src="@item.ToUser.ImgUrl" />
+                            </div>
+                            <div class="delete-block" data-id="@item.Id">&times;</div>
+                            <div class="xxright">
+                                <a href="@Url.Action("Chat", "Messages", new { touserid = toid })" class="">
+                                    <div class="xxrtop">
+                                        <h2>@item.ToUser.Username</h2>
+                                        <span class="time">@item.SimpleTime()</span>
+                                    </div>
+                                    <div class="xxrbtm">
+                                        <p>@Html.Raw(item.Content)</p>
+                                        @if (item.UnReadCount != 0)
+                                        {
+                                            <span class="hyxx">@item.UnReadCount</span>
+                                        }
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div id="tab3" class="tab">
+                    @foreach (var item in Model.SystemMessage)
+                    {
+                        if (item.MessageType == MessageType.Reward)
+                        {
+
+                            <div class="xxblock" data-key="@item.Id" data-read="@item.IsRead">
+                                <a class="xxgzbox">
+                                    <div class="xximg xtimg">
+                                        @if (!item.IsRead)
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                        <img src="/images/xxico1.png">
+                                    </div>
+                                    <div class="delete-block" data-id="@item.Id">&times;</div>
+                                    <div class="xxright">
+                                        <div class="xxrtop">
+                                            <h2>[获得赏金］</h2>
+                                            <span>@item.SimpleTime()</span>
+                                        </div>
+                                        <div class="xxrbtm">
+                                            <p>@item.Content</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+
+                        }
+                        if (item.MessageType == MessageType.BuyInfo)
+                        {
+                            <div class="xxblock" data-key="@item.Id" data-read="@item.IsRead">
+                                <a class="xxgzbox">
+                                    <div class="xximg tsimg">
+                                        @if (!item.IsRead)
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                        <img src="/images/xxico2.png">
+                                    </div>
+                                    <div class="delete-block" data-id="@item.Id">&times;</div>
+                                    <div class="xxright">
+                                        <div class="xxrtop">
+                                            <h2>[购买提示］</h2>
+                                            <span>@item.SimpleTime()</span>
+                                        </div>
+                                        <div class="xxrbtm">
+                                            <p>@item.Content</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                        if (item.MessageType == MessageType.ReChange)
+                        {
+                            <div class="xxblock" data-key="@item.Id" data-read="@item.IsRead">
+                                <a class="xxgzbox">
+                                    <div class="xximg xtimg">
+                                        @if (!item.IsRead)
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                        <img src="/images/xxico.png">
+                                    </div>
+                                    <div class="delete-block" data-id="@item.Id">&times;</div>
+                                    <div class="xxright">
+                                        <div class="xxrtop">
+                                            <h2>[充值］</h2>
+                                            <span>@item.SimpleTime()</span>
+                                        </div>
+                                        <div class="xxrbtm">
+                                            <p>@item.Content</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+
+                        if (item.MessageType == MessageType.SystemInfo)
+                        {
+                            <div class="xxblock" data-key="@item.Id" data-read="@item.IsRead">
+                                <a class="xxgzbox">
+                                    <div class="xximg xtimg">
+                                        @if (!item.IsRead)
+                                        {
+                                            <span>&nbsp;</span>
+                                        }
+                                        <img src="/images/navimg5.png">
+                                    </div>
+                                    <div class="delete-block" data-id="@item.Id">&times;</div>
+                                    <div class="xxright">
+                                        <div class="xxrtop">
+                                            <h2>[系统提示］</h2>
+                                            <span>@item.SimpleTime()</span>
+                                        </div>
+                                        <div class="xxrbtm">
+                                            <p>@item.Content</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $.post("/Messages/SetAllInfoMessageReaded", function (d) {
+    });
+    var sweep = new Sweep($(".xxblock"), function ($ele) {
+        $ele.find(".delete-block").show();
+        $ele.find(".xximg").hide();
+    }, function ($ele) {
+        $ele.find(".delete-block").hide();
+        $ele.find(".xximg").show();
+    });
+
+</script>

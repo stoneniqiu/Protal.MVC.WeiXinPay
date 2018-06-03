@@ -1,0 +1,15 @@
+﻿@{
+    ViewBag.Title = "Unauthorized";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+<div class="alert alert-block alert-info" style="margin-top: 100px">
+    Sorry! 需要 @ViewBag.P 权限才能访问, 你的权限不够！
+</div>
+
+   @Html.ActionLink("返回登录","Logon","Account")
+    
+    
+  </div>

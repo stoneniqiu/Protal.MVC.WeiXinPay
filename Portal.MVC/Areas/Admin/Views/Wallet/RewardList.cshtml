@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "获奖记录";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+    
+}
+@Html.Partial("_adminMap")
+@using Niqiu.Core.Helpers
+@model IEnumerable<Portal.MVC.ViewModel.RewardLog>
+
+<div class="container-fluid">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>@ViewBag.Title</h5>
+
+        </div>
+        <div class="widget-content nopadding">
+
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>用户名</th>
+                        <th>谜题</th>
+                        <th>获得金额</th>
+                        <th>获奖时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        var rewards = item.List;
+                        var ulist = item.Question.RewardUsers.ToList();
+                        for (var i = 0; i < rewards.Length; i++)
+                         {
+                             if (i < ulist.Count && ulist[i] != null)
+                             {
+    <tr>
+        <td>@ulist[i].Username </td>
+        <td>@item.Question.Title</td>
+        <td>@Html.Raw(rewards[i] + "元")</td>
+        <td>@ulist[i].SimpleTime()</td>
+        @*<td><a data-id="@item.Id" class="deleta">删除</a></td>*@
+    </tr>
+                             }
+                         }
+
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            总记录:@Model.Count()
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>
+<script>
+    $(".deleta").click(function () {
+        admin.deleteItem($(this), '@Url.Action("Delete")');
+    });
+
+</script>

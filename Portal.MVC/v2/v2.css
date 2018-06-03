@@ -1,0 +1,392 @@
+﻿ #footertabs{ padding: 0 4%;}
+ *{ font-family: 方正兰亭黑简体,Helvetica,Microsoft JhengHei; }
+.bar-tab .tab-item { width: 18.4%;display: inline-block; }
+.plbtm{ bottom: 2.6rem;}
+.w100{width: 100%}
+ .chuti {
+     background: url('/v2/imgs/chuti.png') center;
+     background-size: cover;
+ }
+  .chuti:active {
+   background: url('/v2/imgs/chutiing.png') center;
+     background-size: cover;
+  }
+  .chuti.active {
+   background: url('/v2/imgs/chutied.png') center;
+     background-size: cover;
+  }
+   .chuti.disabled {
+   background: url('/v2/imgs/chutidie.png') center;
+     background-size: cover;
+  }
+ .resend {
+      background: url('/v2/imgs/resend.png') center;
+     background-size: cover;
+ }
+ .resend:active {
+      background: url('/v2/imgs/resending.png') center;
+     background-size: cover;
+ }
+  .resend.die {
+      background: url('/v2/imgs/resenddie.png') center;
+     background-size: cover;
+ }
+ .doanswer {
+     background: url('/v2/imgs/answer.png') no-repeat center center;
+     background-size: 48px;
+ }
+  .doanswer:active {
+     background: url('/v2/imgs/answer.png') no-repeat center center;
+     background-size: 53px;
+ }
+    .doanswer.die {
+     background: url('/v2/imgs/answerdie.png') no-repeat center center;
+     background-size: 48px;
+ }
+ .classical {
+       background: url('/v2/imgs/class.png') center;
+     background-size: cover;
+ }
+  .classical:active {
+       background: url('/v2/imgs/classing.png') center;
+     background-size: cover;
+ }
+   .classical.active {
+       background: url('/v2/imgs/classed.png') center;
+     background-size: cover;
+ }
+ .wallet {
+       background: url('/v2/imgs/wallet.png') center;
+     background-size: cover;
+ }
+  .wallet:active {
+       background: url('/v2/imgs/walleting.png') center;
+     background-size: cover;
+ }
+   .wallet.active {
+       background: url('/v2/imgs/walleted.png') center;
+     background-size: cover;
+ }
+   /*谜题详情*/
+   .question-title {
+       min-height:2.5rem;padding-left: 3rem;text-align: left;
+       background: url('/v2/imgs/ask.png') no-repeat .25rem center;
+       background-size: 2rem;padding-top: .25rem;font-size: .8rem;
+   }
+   .question-img-warp {
+       display: block;position: relative;
+   }
+   .buyTag{ position: absolute;bottom: 1rem;left: .5rem;height: 1.2rem;width: 1.2rem;
+       background-image: url("/v2/imgs/light.png");background-size: contain;
+   }
+    .buyTag:active {
+         background-image: url("/v2/imgs/lighting.png");height: 1.5rem;width: 1.5rem;
+    }
+    .buyTag.die {
+          background-image: url("/v2/imgs/ebw.png")
+    }
+
+   .duration{ position: absolute;right: .5rem;top: .5rem;color: white;}
+   .gard .info { vertical-align: top;}
+     .gard .info .name {
+        width: 4rem;
+       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+     }
+
+ .gard .info .address{ font-size: small;color:gray}
+ .question-sum-row{ padding: .5rem 0 ;margin: 0 .5rem;border-bottom: 1px solid gainsboro} 
+ .question-sum-row .col-50{margin-left: 0%;width: 50%;}
+ .question-sum .col-25{ vertical-align: top;}
+ .question-sum .col-25 div{ text-align: center;color: gray;}
+ .question-sum .col-25 a, .question-sum .col-25 img{
+     width: 100%;
+ }
+    .buttons-tab .button {
+        color: #5e9826;
+        border: none;
+    }
+ 
+ .buttons-tab .button#callcomment {
+     background: url('/v2/imgs/greenbt.png') no-repeat center;
+     background-size: contain;
+     color: white; 
+ }
+  .buttons-tab .button#callcomment:active {
+     background: url('/v2/imgs/graybt.png') no-repeat center;
+     background-size: contain;
+     color: white; 
+ }
+  .buttons-tab .button.question-end.active {
+     color: gray;
+ }
+ .mytabs{ padding: .5rem;}
+ .plbtm input[type=text] {
+     border-radius: 3px;
+     width: 95%;
+ }
+ #answerQuestionbt,#commentbt {
+     background:url('/v2/imgs/submit.png') no-repeat center;
+     background-size: cover;
+     width: 100%;padding: 0;height: 2rem;  line-height: 2rem;
+     top: 0;
+ }
+ .comment .row .col-20, .anwserquestion .row .col-20 {
+     text-align: center;
+  width: 20%;margin-left: 0;
+ }
+  #answerQuestionbt:active,#commentbt:active {
+     background:url('/v2/imgs/submiting.png') no-repeat center;
+     background-size: cover;
+     width: 100%;padding: 0;
+ }
+  .popup-turn{ 
+      background-color: rgba(183, 168, 111,0.9);
+  }
+.popup-turn .close-popup ,#errorpop .close-popup{
+    position: absolute;right: .5rem;top: .5rem;height: 1.2rem;width: 1.2rem;
+    background: url('/v2/imgs/close.png') no-repeat;
+    background-size: contain;
+}
+  .ohyea{ width: 100%;}
+.reward-info{ text-align: center;padding: 0 35%;color: white;margin-top: -30%;}
+.reward-info .from{ font-size: .7rem;line-height: 15px;}
+.reward-info .from span{ width: 2rem;display: inline-block;  vertical-align: bottom;
+       white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.reward-info .amount{ color: gold;font-size: 1rem;}
+.reward-title{ font-size: .9rem;}
+.zhye{ display: block;text-align: center;margin: 1rem 15%;color: goldenrod;
+    background-color: #3d3939;font-size: .8rem;height: 1.5rem;line-height: 1.5rem;border-radius: 1rem;
+}
+.zhye:active {
+      background-color: #1E1E1E;color: goldenrod;
+}
+.zhye.chuti-icon {
+    background-image: url('/v2/imgs/ccc.png');
+    background-repeat: no-repeat;
+    background-position: .5rem center;
+    background-size: 1rem;
+    padding-left: .5rem;
+}
+.zhye.chongfa-icon {
+    background-image: url('/v2/imgs/rrr.png');
+    background-repeat: no-repeat;
+    background-position: .5rem center;
+    background-size: 1rem;
+    padding-left:.5rem;
+}
+.wx-info{ text-align: center;color: white;font-size: small;}
+.wx-code{ text-align: center;}
+/*购买谜题*/
+.buyTag {
+}
+/*回答失败*/
+.error-img{ padding: 1rem 30%;}
+.error-img img{ width: 100%;}
+#errorpop.popup{background-color:rgba(255, 255, 255,.8)  }
+.zhye-green{ display: block;text-align: center;margin: 1rem 13%;color: white;
+    background-color: #5e9826;font-size: .8rem;height: 1.8rem;line-height: 1.8rem;border-radius: 1rem;
+    padding-left: .5rem;
+     background-repeat: no-repeat;
+    background-position: .5rem center;
+    background-size: 1rem;
+}
+.zhye-green:active {
+    background-color: #346a00;color: white;
+}
+.zhye-green.jixu {
+    background-image: url('/v2/imgs/e_anwser.png');
+}
+.zhye-green.jixu:active {
+    background-image: url('/v2/imgs/eaw.png');
+}
+.zhye-green.byf {
+    background-image: url('/v2/imgs/e_buy.png');
+}
+.zhye-green.byf:active {
+    background-image: url('/v2/imgs/ebw.png');
+}
+.zhye-green.ct {
+    background-image: url('/v2/imgs/e_chuti.png');
+}
+.zhye-green.ct:active {
+    background-image: url('/v2/imgs/ecw.png');
+}
+.zhye-green.rs {
+    background-image: url('/v2/imgs/e_re.png');
+}
+.zhye-green.rs:active {
+    background-image: url('/v2/imgs/erw.png');
+}
+/*获奖详情*/
+.redbk-header {
+    margin-top: 1rem;
+    height:5rem;
+    background-image: url('/v2/imgs/redbk.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+}
+.redbk-header>img {
+    position: absolute;left: 50%;top: 2.6rem;
+     height: 2.1rem;width: 2.1rem;border-radius: 50%;
+    margin-left: -.80rem;
+}
+.redbk-info{ color: #d2c179;margin:.5rem 16%;text-align: center;vertical-align: baseline;font-size: .8rem;}
+.reward-info2{color: #ddd;text-align: center;margin-bottom: .5rem}
+.reward-info2 span{color: #d2c179;}
+.reward-info2 span sub{ bottom: 0;font-size: 10px;}
+.reward-info2  .mmoney{margin: 0 1rem 0 .5rem}
+.reward-info2 .mpeople{ margin-left: .5rem;}
+.xsje.current{ color: #8ccd01;font-weight: bold;}
+.xswl{ line-height: 1rem;}
+.xsyl{ padding-top: 5px;}
+.xsyl *{ color: gray;}
+.gray { 
+    -webkit-filter: grayscale(50%);
+    -moz-filter: grayscale(50%);
+  
+    -o-filter: grayscale(50%);
+
+    filter: gray;
+}
+.redbk-info span {
+   max-width: 4rem;display: inline-block; 
+   white-space:nowrap;  text-overflow:ellipsis;overflow: hidden;
+    vertical-align: bottom;
+}
+.reward-st{ color: white;text-align: center;font-size: small;}
+.iknow-green{ background-color: #8bcc00;color: black;margin: 1rem 10%;border-radius: 2rem;text-align: center;height: 2rem;line-height: 2rem;
+    font-size: .8rem;
+}
+.iknow-green:active {
+    background-color: #326b00;color: white;
+}
+/*个人中心*/
+.wdtop p,.wdtop a{ font-size: 1.2rem;}
+.wdtop a{ margin-top: .5rem;display: inline-block;}
+.wdtop div{ color: #8bcc00;font-size: 1.2rem;}
+/*支付框*/
+.modal-inner{ background-color: white;}
+.modal-title-inner{ position: relative; }
+.modal-title-inner span{
+    display: inline-block;
+    width: 1.4rem;height: 1.4rem;
+    background-image: url('/v2/imgs/left.png');
+    background-size: contain;
+    background-position: 0 0;
+    position: absolute;
+    left: .6rem;top: 50%;
+    margin-top: -0.7rem;
+}
+.modal-title-inner span:active,.modal-title-inner .close-modal:active {
+    border-radius: 10px;background-color: gainsboro;
+}
+.modal-title-inner:before {
+    position: absolute;
+    content: "";
+    height: 1px;
+    background-color: #b5b5b5;
+    width: 100%;
+    left: 0;
+    padding: 0;
+    bottom: 0;
+}
+.modal-title-inner .title-content{ display: inline-block;color: #3c3c3c}
+.modal-title-inner .close-modal {
+     float: right;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 3px;
+     background-image: url('/v2/imgs/cm.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.payway{ padding: .65rem .75rem;color: #3c3c3c;text-align: left;  padding-left: 2.5rem;position: relative}
+.payway:active{ background-color: gainsboro;}
+.payway .right-cion {
+    position: absolute;
+    right: .5rem;top: .15rem;
+    width: 1.5rem;height: 1.5rem;
+    background-image: url('/v2/imgs/right.png');
+    background-position: 0 center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+ 
+.payway.towallet {
+    background-image: url('/v2/imgs/haoyc.png');
+    background-position: .5rem center;
+    background-size: 1.8rem;
+    background-repeat: no-repeat;
+    padding: .38rem .75rem;
+    text-indent: .8rem;
+    border-bottom: 1px solid #b9b9b9;
+}
+
+.payway.weixin {
+    background-image: url('/v2/imgs/weixinpay.png');
+    background-position: .5rem center;
+    background-size: 1.8rem;
+    background-repeat: no-repeat;
+    padding: .38rem .75rem;
+    text-indent: .8rem;
+}
+.payway.weixin.paypadding,.payway.towallet.paypadding {
+    padding: .7rem .75rem;
+    border-bottom: 1px solid transparent;
+
+}
+.payway.paypadding .right-cion {
+    top: .3rem;
+}
+.payway.weixin>span,.payway.towallet>span{ display: inline-block;vertical-align: bottom; }
+.payway.weixin:before,.payway.towallet:before {
+    position: absolute;
+    content: "";
+    height: 1px;
+    background-color: #b5b5b5;
+    width: 100%;
+    left: 0;
+    padding: 0;
+    top: 0;
+}
+.payway.towallet.double:before {
+    background-color:transparent;
+}
+.modal-title-inner span{display: none }
+.payway.yue{ text-align: center;padding-left: 0;font-size: 1rem;}
+.paybutton {
+    text-align: center;
+    padding: .75rem;
+}
+.paybutton a{color: #3a56ef}
+.paybutton:before {
+    position: absolute;
+    content: "";
+    height: 1px;
+    background-color: #b9b9b9;
+    width: 100%;
+     left: 0;
+    padding: 0;
+    top:0;
+}
+.psdinput{padding: .5rem .75rem;}
+.psdinput input{ width: 100%;border-radius: 5px;height: 100%;height: 2rem;text-indent: .5rem;
+    box-shadow: none;border: 1px solid #b9b9b9;outline: none;border-radius: 0;
+                                                                                       
+}
+ 
+.wx-code img{ max-width:7rem;margin-top: 1rem;}
+.wx-code img:active{max-width:8rem;}
+.zfleft.anwser{width:100% }
+.zfleft1 sub{ font-size: 1rem;bottom: 0;}
+.payModal .modal-title+.modal-text{margin-top: 0}
+.payModal .modal-inner{ padding: 0;}
+.payModal .modal-title-inner{padding: .4rem .75rem .4rem .75rem }
+.payModal .modal-text{ }
+/*iphone 5*/
+@media screen and (device-aspect-ratio: 40/71) {
+    .zhye,.zhye-green{ font-size: small;}
+}
+/*iphone 6p*/
+ 

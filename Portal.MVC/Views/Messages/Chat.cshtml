@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model ChatModel
+<style>
+    .plbtm{width: 100%;}
+    .plbtm input[type=text]{width: auto;}
+</style>
+<div class="page" id="chat">
+    @Html.Partial("m_header")
+    <div class="plbtm"><input id="editor1" type="text" onfocus="if (value =='回复'){value =''; this.style.color='#333'}" onblur="if (value ==''){value='回复'; this.style.color='#5e9826'}" value="回复">
+        <div style="display: inline-block;width: 3rem;margin-top: 10px;float: right;margin-right: 1rem;">
+            <input class="button button-fill button-primary" id="righticon" type="button" value="发送" />
+        </div>
+    </div>
+
+    <div class="content "  >
+        <div id="output-content" class="">
+        </div>
+        <input type="hidden" value="@Model.ToUser.Id" id="touserid"/>
+        <div class="server hide">
+            <a class='avatar'><img src='@Model.ToUser.ImgUrl' alt='' /> </a>
+            <div class="message">xxx</div>
+            <div class="msgtool"><span>删除</span></div>
+        </div>
+        <div class="ltkbox to hide">
+            <a href="#" class="fl"><img src="@Model.ToUser.ImgUrl"></a>
+            <div class="ltkbl">
+                <span>是</span>
+            </div>
+        </div>
+        <div class="ltkbox me hide">
+            <a href="#" class="fr"><img src="@Model.Me.ImgUrl"></a>
+            <div class="ltkbl1">
+                <span></span>
+            </div>
+        </div>
+    </div>
+</div>

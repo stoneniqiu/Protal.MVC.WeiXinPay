@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "订单管理";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@using Niqiu.Core.Helpers
+@model IEnumerable<Niqiu.Core.Domain.Payments.Order>
+@Html.Partial("_adminMap")
+<div class="container-fluid">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>@ViewBag.Title</h5>
+
+        </div>
+        <div class="widget-content nopadding">
+
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="title-checkbox" name="title-checkbox" />全选</th>
+                        <th>订单号</th>
+                        <th>金额</th>
+                        <th>订单类型</th>
+                        <th>用户名</th>
+                        <th>支付方式</th>
+                        <th>支付时间</th>
+                        <th>订单状态</th>
+                        <th>创建时间</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td><input data-id="@item.Id" type="checkbox" /></td>
+                            <td>@item.OrderNumber</td>
+                            <td>@item.Amount</td>
+                            <td>@Html.EnumToText(item.OrderType)</td>
+                            <td>@item.User.Username</td>
+                            <td>@Html.EnumToText(item.PayType)</td>
+                            <td>@item.PayTime</td>
+                            <td>@Html.EnumToText(item.OrderState)</td>
+                            <td>@item.SimpleTime()</td>
+                            <td><a data-id="@item.Id" class="deleta">删除</a></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="10">
+                            总记录:@Model.Count() <a class="btn btn-danger">删除</a>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>
+<script>
+    
+    $(".deleta").click(function () {
+        admin.deleteItem($(this), '@Url.Action("DeleteOrder")');
+    });
+
+    $(".btn-danger").click(function() {
+        admin.deleteItems(null, '@Url.Action("DeleteOrder")');
+    });
+
+</script>

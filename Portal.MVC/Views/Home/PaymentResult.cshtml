@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "购买提示";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="payresult" class="page">
+    @Html.Partial("m_header")
+    <div class="content content-padded">
+        <div class="bottomline">
+            <div class="tjtop" style="font-size: 1rem;">@ViewBag.PayResult</div>
+        </div>
+        <div>
+            <p>您好：</p>
+            <p class="text-center">
+                @ViewBag.Info
+            </p>
+            <div style="font-size: small;color: #666">系统消息中也可以查看哦</div>
+            <div style="text-align: center">
+                <a href="@Url.Action("Detail", new { id = ViewBag.Qid })"   class="button button-success button-big button-fill " style="background: #bfd6a8">继续答题</a> 
+            </div>
+        </div>
+    </div>
+</div>

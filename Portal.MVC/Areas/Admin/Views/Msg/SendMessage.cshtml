@@ -1,0 +1,147 @@
+﻿@{
+    ViewBag.Title = "群发消息";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@Html.Partial("_adminMap")
+<script src="~/Content/layer/layer.js"></script>
+<style>
+    .senda, a {
+        color: blue;
+        cursor: pointer;
+    }
+
+    .form-group input, .form-group textarea {
+        width: 90%;
+    }
+</style>
+<div class="container-fluid">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>@ViewBag.Title</h5>
+
+            @*<div>
+                    <a>发送所有用户</a>
+                    <input id="stxt" type="text" placeholder="用户名" />
+                    <button id="search" class="btn btn-primary">查找</button>
+                </div>*@
+        </div>
+        <div class="widget-content nopadding">
+
+            <div id="page">
+                @Html.Action("UserPage")
+
+            </div>
+        </div>
+    </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="width: 380px;" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        用户:<span></span>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" class="">
+                        <div class="form-group">
+                            <label for="title">标题</label>
+                            <input type="text" class="form-control" id="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="contentT">内容</label>
+                            <textarea class="form-control" id="contentT"></textarea>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="send" class="btn btn-primary">
+                        发送
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</div>
+<script>
+    var currentId = 0;
+    var sendAll = false;
+    $(".senda").click(function () {
+        sendAll = false;
+        $(".modal-title span").html($(this).data("name"));
+        currentId = $(this).data("id");
+        $('#myModal').modal();
+    });
+    $("#sendAll").click(function () {
+        sendAll = true;
+        $(".modal-title span").html("全体用户");
+        var name = "";
+        if ($("tbody input:checkbox:checked").length) {
+            $("tbody input:checkbox:checked").each(function () {
+                name += $(this).data("name");
+            });
+            $(".modal-title span").html(name);
+        }
+
+        $('#myModal').modal();
+    });
+
+    $("#send").click(function () {
+        var txt = getContent();
+        if (txt === false) {
+            toastr.error("标题或内容不能为空");
+            return;
+        }
+        if (!sendAll) {
+            //单发
+            $.post('@Url.Action("SendTo")', { id: currentId, content: txt }, function () {
+                admin.info("发送成功");
+                clear();
+            });
+        } else {
+
+            if ($("#title-checkbox").is(":checked")) {
+                if (!$("tbody input:checkbox:checked").length) {
+                    toastr.error("请勾选要发送的用户!");
+                    return;
+                }
+                //获取姓名:
+                //获取id
+                var ids = "";
+
+                $.post('@Url.Action("SendToUsers")', { id: ids, content: txt }, function () {
+                    admin.info("发送成功");
+                    clear();
+                });
+
+            } else {
+                $.post('@Url.Action("SendToAll")', { content: txt }, function () {
+                    admin.info("发送成功");
+                    clear();
+                });
+            }
+
+
+        }
+    });
+
+    function getContent() {
+        var title = $.trim($("#title").val());
+        var content = $.trim($("#contentT").val());
+        if (title == "" || content == "") return false;
+        return "【" + title + "】 " + content;
+    }
+
+    function clear() {
+        $("#title").val("");
+        $("#contentT").val("");
+        $('#myModal').modal('hide');
+    }
+
+
+</script>

@@ -1,0 +1,103 @@
+﻿@{
+    ViewBag.Title = "用户导入";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+
+@model IEnumerable<Niqiu.Core.Domain.User.User>
+<div id="content-header">
+    <div id="breadcrumb">
+        <a href="@Url.Action("Index", "User")" title="Go to Home" class="tip-bottom"><i class="icon-home"></i>Home</a>
+        <a href="#" class="tip-bottom current">@ViewBag.Title</a>
+    </div>
+    <h1>@ViewBag.Des</h1>
+</div>
+<div class="container-fluid">
+    <hr>
+    <div class="row-fluid">
+        <div class="span12">
+            @using (Html.BeginForm("UserImport", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div style="margin-top: 20px;">
+                    <p>请按照模板格式导入，第一行不要留空，导入过程可能比较长，请耐心等候</p>
+                    <p>
+                        选择文件：<input id="FileUpload" type="file" name="files" style="width: 250px; height: 24px;
+                                                                                                 background: White" class="easyui-validatebox" />
+                    <p style="color: Red; text-align: center; " class="pull-right">@Html.ActionLink("下载模版", "GetFile")</p>
+                    </p>
+                    <p>
+                        <input id="btnImport" type="submit" value="导入" style="width: 60px; height: 28px;" />
+                    </p>
+                    <p style="color: Red; text-align: center;">@ViewBag.error</p>
+                </div>
+            }
+            @if (Model != null)
+            {
+                <div><strong>成功导入 <span style="color: blue">@Model.Count()</span> 人</strong></div>
+                <table class="table table-hover table-bordered">
+                    <tr>
+                        <th>
+                            姓名
+                        </th>
+
+                        <th>
+                            学号
+                        </th>
+                        <th>
+                            学院
+                        </th>
+                        <th>
+                            身份证
+                        </th>
+                    </tr>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.RealName)
+
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SchoolNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SchoolName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.IDCard)
+
+
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+            <span class="errorinfo"></span>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+        admin.setActive("usermanage");
+
+        $(".deleta").click(function () {
+            var name = $(this).attr("data-name");
+            var row = $(this).parent().parent();
+            if (confirm("确定要删除" + name)) {
+                var id = $(this).attr("data-id");
+                $.post('/user/Delete', { id: id }, function (data) {
+                    if (data != 0) {
+                        row.fadeOut();
+                    } else {
+                        $.infoShow("删除失败", 0);
+                    }
+                });
+            }
+
+        });
+
+    });
+</script>

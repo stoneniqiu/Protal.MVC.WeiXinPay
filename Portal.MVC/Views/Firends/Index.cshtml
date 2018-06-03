@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "我的好友";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model FirendsListGroup
+<div id="firends" class="page">
+    @Html.Partial("m_header")
+    @Html.Partial("m_footer")
+    <div class="content">
+        <div class="hycon">
+            @if (ViewBag.HasNew)
+            {
+                <a data-no-cache="true"  href="@Url.Action("FirendsNew")" class="hybox">
+                    <span class="hynew">&nbsp;</span>
+                    <span>新的好友</span>
+                    @if (ViewBag.New > 0)
+                    {
+                        <span class="hymsg">@ViewBag.New</span>
+                    }
+                </a>
+            }
+
+        </div>
+        @foreach (var d in Model.Groups)
+        {
+
+
+            var list = d.Value;
+            <div id="@list.Title" class="hylink">@list.Title</div>
+            foreach (var item in list.Firends)
+            {
+                <div class="hycon">
+                    <a href="@Url.Action("Detail","Firends",new{userid=item.FirendId})" class="hybox">
+                        <img src="@item.FirendImg">
+                        <span>@item.FirendName</span>
+                    </a>
+                </div>
+            }
+        }
+
+
+        <div class="hylinkbl" style="display: none">
+            @foreach (var d in Model.Groups)
+            {
+                var list = d.Value;
+                <span href="#@list.Title">@list.Title</span>
+            }
+        </div>
+
+    </div>
+</div>
+<script>
+   
+</script>

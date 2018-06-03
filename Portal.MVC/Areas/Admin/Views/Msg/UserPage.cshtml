@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Niqiu.Core.Domain.User.User>
+
+     <table class="table table-bordered data-table">
+    <thead>
+        <tr>
+            <th><input type="checkbox" id="title-checkbox" name="title-checkbox" />全选</th>
+            <th>序号</th>
+            <th>用户名</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><input data-id="@item.Id" data-name="@item.Username" type="checkbox" /></td>
+                <td>@item.Id</td>
+                <td>@item.Username</td>
+                <td><a data-id="@item.Id" data-name="@item.Username" class="senda">编辑内容</a></td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="10">
+                总记录:@Model.Count() <a id="sendAll" class="btn btn-danger">发送所有用户</a>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+      
+ <script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>

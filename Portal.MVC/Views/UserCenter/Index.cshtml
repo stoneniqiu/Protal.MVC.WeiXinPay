@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "好油菜·我的钱包";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Niqiu.Core.Domain.User.User
+<style>
+    .wdtopbl .row, .wdtopbl .row .col-50 {
+        overflow: auto;height: 3rem;
+    }
+</style>
+<div id="usercenter" class="page">
+    @Html.Partial("m_header")
+    @Html.Partial("m_footer")
+    
+    <div class="content">
+        <div class="wdcontent">
+            <div class="wdtop">
+                <img src="@Model.ImgUrl">
+                <p>@Model.Username</p>
+                <a>钱包余额</a>
+                <div>@(ViewBag.Wallet.Balance)元</div>
+            </div>
+
+            <div class="wdbox">
+                <a href="@Url.Action("ToCash")" class="wdblock">
+                    <img src="/v2/imgs/tocash.png"/>
+                     <span>提现</span>
+                </a>
+                <a href="@Url.Action("List")" class="wdblock">
+                    <img src="/v2/imgs/bills.png" />
+                    <span>我的账单</span>
+                </a>
+                <a href="@Url.Action("MyQuestions")" class="wdblock">
+                    <img src="/v2/imgs/myqs.png">
+                    <span>我的谜题</span>
+                </a>
+                <a href="@Url.Action("ConnectService")" class="wdblock">
+                    <img src="/v2/imgs/cs.png">
+                    <span>联系客服</span>
+                </a>
+                <a href="@Url.Action("Detail")" class="wdblock">
+                    <img src="/v2/imgs/bm.png">
+                    <span>手机捆绑</span>
+                </a>
+                <a href="@Url.Action("SetPayPassword")" class="wdblock wdico1">
+                    <img src="/v2/imgs/pwdset.png">
+                    <span>支付密码</span>
+                </a>
+                @*<a href="@Url.Action("MyWallet")" class="wdblock">
+                    <img src="/images/wdqb.png">
+                    <span>我的钱包</span>
+                </a>*@
+                @*<a href="@Url.Action("Set")" class="wdblock wdico1">
+                    <img src="/images/wdsz.png">
+                    <span>我的设置</span>
+                </a>*@
+            </div>
+           
+        </div>
+    </div>
+
+</div>
+ <script>
+    tools.editeWxTitle("个人中心");
+</script>

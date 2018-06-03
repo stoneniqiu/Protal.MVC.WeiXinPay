@@ -1,0 +1,53 @@
+﻿<table class="table table-bordered  ">
+    <thead>
+        <tr>
+            <th><input type="checkbox"  id="title-checkbox" name="title-checkbox" /></th>
+            <th>学号</th>
+            <th>学院</th>
+            <th>姓名</th>
+            <th>登录名</th>
+            <th>手机</th>
+            <th>角色</th>
+            <th>更新时间</th>
+            <th>编辑</th>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.Action("UserPage", new { name = ViewBag.UserName, schoolname = ViewBag.SchoolName, number = ViewBag.Number });
+    </tbody>
+</table>
+<button id="dbt" class="btn btn-danger">删除</button>
+<div id="page"></div>
+
+<script>
+
+  $(function() {
+      function page() {
+          var total = parseInt($("#totle").val());
+          var cur = 1;
+          if (total == 0) {
+              cur = 0;
+          }
+          console.log(total, cur);
+          var options = {
+              currentPage: cur,
+              totalPages: total,
+              useBootstrapTooltip: true,
+              onPageClicked: function (e, originalEvent, type, page) {
+                  var name = $("#name").val();
+                  var school = $("#school").val();
+                  var number = $("#number").val();
+                  $("table tbody").html("loading...");
+                  $.post('/admin/user/userpage', { schoolName: school, name: name, number: number, page: page - 1 }, function (data) {
+                      $("table tbody").html(data);
+                  });
+              }
+          }
+          console.log($("#totle").val(), options);
+
+          $('#page').bootstrapPaginator(options);
+      }
+
+      page();
+  })
+</script>

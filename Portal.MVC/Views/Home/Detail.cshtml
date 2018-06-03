@@ -1,0 +1,459 @@
+﻿@using Niqiu.Core.Domain.Reports
+@using Niqiu.Core.Helpers
+@model Niqiu.Core.Domain.Questions.Question
+
+@{
+    ViewBag.Title = "谜题详情";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<div id="detail" class="page page-current">
+    @Html.Partial("m_header")
+    @Html.Partial("m_footer")
+    @Html.Partial("isloginTag")
+    <div class="content ">
+        <div class="questione card">
+            <div class="card-content">
+                <div class="card-content-inner text-center" style="padding:0 0 0.75rem 0;">
+                    <div class="question-title">
+                        @Model.Title
+                    </div>
+                    <div class="question-img-warp" href="#">
+                         <div class="duration">@Model.DurationTimeToStr()</div>
+                        <img src="@Model.ImageUrl" />
+                        <a data-href="@Url.Action("BuyInfo", new {questionId = Model.Id})" class="buyTag"> </a>
+                    </div>
+                </div>
+                @if (!Model.IsEnd() && !Model.IsFinished)
+                {
+                    @*<div style="padding-left: 1rem;color: gray"><span class="icon-time"> </span>剩余：@Model.DurationTimeToStr() 小时</div>*@
+                }
+                @if (ViewBag.isSelf && (Model.IsFinished || Model.IsEnd()))
+                {
+                    <div style="padding-left: 1rem; color: #5e9826; "><span class="icon-time"> </span>答案：@Model.Answer </div>
+                }
+
+                @if (Model.IsFinished || Model.IsEnd())
+                {
+                    <input id="questionstate" type="hidden" value="1" />
+                }
+
+                @if (!ViewBag.isSelf && Model.IsFinished)
+                {
+                    <div style="padding-left: 1rem; color: #5e9826; "><span class="icon-time"> </span>答案：@Model.Answer </div>
+                }
+
+                <div class="row question-sum-row">
+                    <div class="col-50">
+                        <div class="gard">
+                            <div class="header">
+                                <img src="@Model.User.ImgUrl" />
+                            </div>
+                            <div class="info">
+                                <div class="name">@Model.User.Username</div>
+                                @if (!string.IsNullOrEmpty(Model.User.Province) && !string.IsNullOrEmpty(Model.User.City))
+                                {
+                                    <span class="address">@Model.User.Province-@Model.User.City</span>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-50">
+                        <div class="row question-sum">
+                            <div class="col-25">
+                                <a><img src="/v2/imgs/shared.png"></a>
+                                <div>@Model.Shareds.Count</div>
+                            </div>
+                            <div class="col-25">
+                                <a class="xqlike" data-key="@Model.Id">
+
+                                    @if (ViewBag.IsLike)
+                                    {
+                                        <img src="/v2/imgs/praised.png" />
+                                    }
+                                    else
+                                    {
+                                        <img src="/v2/imgs/praise.png" class="praiseimg" />
+                                        <img src="/v2/imgs/praised.png" class="hide praisedimg" />
+                                    }
+                                </a>
+                                <div>@Model.PraisesNum</div>
+                            </div>
+                            <div class="col-25">
+                                <a class="open-popup" data-popup=".popup-reward"><img src="/v2/imgs/money.png" /></a>
+                                <div>@Math.Round(Model.Reward)</div>
+                            </div>
+                            <div class="col-25">
+                                <a class="open-report" data-id="@Model.Id" data-type="@Html.EnumToText(ReportRelateType.Question)" data-user="@Model.User.Username"><img src="/v2/imgs/report.png" /></a>
+                                <div>举报</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            @{
+                var rewards = Model.GetReward();
+                var ulist = Model.RewardUsers.ToList();
+                var getCurrent = false;
+                var rewardnum = ulist.Count > rewards.Length ? rewards.Length : ulist.Count;
+            }
+            <div class="buttons-tab mytabs">
+                <a href="#tab3" class="tab-link button question-end">记录<span>@Model.Answers.Count</span></a>
+                <a href="#tab1" id="callcomment" class="tab-link active button">评论<span>@Model.CommentNum</span></a>
+                <a href="#tab2" class="tab-link button question-end">获奖者<span>@rewardnum</span></a>
+            </div>
+            <div class="content-block" style="padding: 0 0 3rem 0;width: 94%;margin: 0 auto;">
+                <div class="tabs">
+                    <div id="tab1" class="tab active">
+                        @Html.Partial("_comments", Model.Commnets)
+                    </div>
+                    <div id="tab2" class="tab">
+
+                        @for (var i = 0; i < rewards.Length; i++)
+                        {
+                            if (i < ulist.Count && ulist[i] != null)
+                            {
+                                <div class="plbl">
+                                    <div class="pllist">@Html.Raw(i + 1).</div>
+                                    <a href="@Url.Action("Detail", "Firends", new { userid = ulist[i].Id })">
+                                        <img src="@ulist[i].ImgUrl" class="pltx">
+                                    </a>
+                                    <div class="plrboxl">
+                                        <span class="plname">@ulist[i].Username</span>
+                                        <div class="pltime">@ulist[i].SimpleTime(ulist[i].ModifyTime)</div>
+                                    </div>
+                                    <div class="plrboxr plrboxr1" style="color: #999">@Html.Raw(rewards[i] + "元")</div>
+
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div id="tab3" class="tab">
+                        @foreach (var user in Model.Answers)
+                        {
+                            <div class="hjbox">
+                                <div class="plbl">
+                                    <a href="@Url.Action("Detail", "Firends", new { userid = user.User.Id })">
+                                        <img src="@user.User.ImgUrl" class="pltx">
+
+                                    </a>
+                                    <div class="plright">
+                                        <div class="plrbox">
+                                            <div class="plrboxl">
+                                                <span>@user.User.Username</span>
+                                                <div class="pltime">@user.SimpleTime()</div>
+                                            </div>
+                                        </div>
+                                        @if (Model.ValidAnswer(user.Content))
+                                        {
+                                            <div class="plrtxt">答：&nbsp;******</div>
+                                        }
+                                        else
+                                        {
+                                            <div class="plrtxt">答：&nbsp;@user.Content</div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottomline">
+            </div>
+        </div>
+        @if (!ViewBag.isSelf)
+        {
+            if ((!Model.IsEnd() && !Model.IsFinished) && !ViewBag.IsAnwserRight)
+            {
+                //用户进来
+                @*<nav class="bar bar-tab questionfooter plbtm">
+                        <a id="wantanswer">我要答题</a>
+                        <a href="@Url.Action("BuyInfo", new {questionId = Model.Id})">购买提示</a>
+                    </nav>*@
+            }
+            if (ViewBag.IsAnwserRight)
+            {
+                <input id="answerstate" value="1" type="hidden" />
+            }
+
+
+        }
+        else
+        {
+            if (Model.IsEnd() && !Model.IsFinished)
+            {
+                <nav class="bar bar-tab questionfooter plbtm">
+                    <a id="republish" href="@Url.Action("CreateStep3","Question",new{id=Model.Id})">重新发布</a>
+                    <a id="showAnswer" data-key="@Model.Id" href="">公布答案</a>
+                </nav>
+            }
+            <input id="isSelf" value="1" type="hidden" />
+        }
+        <nav class="bar bar-tab anwserquestion plbtm none">
+            <div class="row">
+                <div class="col-80">
+                    <input type="text" id="anwsertxt" placeholder="请输入谜题答案" style="background: rgb(255, 255, 255);" />
+                </div>
+                <div class="col-20">
+                    <button id="answerQuestionbt" class="button " data-name="@Model.User.Username" style="border: none;" data-key="@Model.Id"></button>
+                </div>
+            </div>
+        </nav>
+        <nav class="bar bar-tab comment plbtm none">
+            <div class="row">
+                <div class="col-80">
+                    <input type="text" id="comenttxt" data-key="0" placeholder="请输入评论" style="background: rgb(255, 255, 255);" />
+                </div>
+                <div class="col-20">
+                    <button id="commentbt" class="button" style="border: none;" data-key="@Model.Id"></button>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div id="errorpop" class="popup popup-errorAnwser">
+        <div class="error-img">
+            <img src="/v2/imgs/errans.png" />
+        </div>
+        <div class="close-popup"></div>
+        <a href="#" class="zhye-green jixu">绝不气馁，我要继续回答此题</a>
+        <a href="@Url.Action("BuyInfo", new { questionId = Model.Id })" class="zhye-green byf">我还是看看提示里有什么吧</a>
+        <a href="@Url.Action("CreateStep1","Question" )" class="zhye-green ct">我也出道题,考考别人</a>
+        <a href="@Url.Action("CreateStep3", "Question", new { id = Model.Id })" class="zhye-green rs resendThisQuestion" data-id="@Model.Id">这个谜题不错,我重新再发此题</a>
+    </div>
+    <div class="popup popup-turn">
+        <img class="ohyea" src="/v2/imgs/rightanswer.png" />
+        <div class="close-popup"></div>
+        <div class="reward-info">
+            <div class="reward-title">回答正确</div>
+            <div class="from">获得了<span>@Model.User.Username</span>的现金红包</div>
+            <div class="amount"><span>@ViewBag.Reward</span>元</div>
+        </div>
+        <a href="@Url.Action("CreateStep1","Question")" class="zhye chuti-icon">考考朋友们的智商,我也出道题</a>
+        <a href="@Url.Action("CreateStep3", "Question", new { id = Model.Id })" class="zhye chongfa-icon">这个谜题不错我重新再发此题</a>
+        <a href="http://coupon.m.jd.com/coupons/show.action?key=5a7177760744443f950feec26a4bab47&roleId=6701799&to=home.m.jd.com/wallet/coupons" class="zhye">领取小帅影院优惠券</a>
+        <div class="wx-info">长按二维码关注小帅影院，每日精彩电影内容不容错过!</div>
+        <div class="wx-code">
+            <img src="/v2/imgs/vcode1.jpg" />
+        </div>
+    </div>
+    <div class="popup popup-reward">
+        <div class="redbk-header">
+            <img src="@Model.User.ImgUrl" />
+        </div>
+        <div class="redbk-info">答对<span>@Model.User.Username</span>的谜题就能获得他的现金红包哦</div>
+        <div class="reward-info2">总金额<span class="mmoney">@Math.Round(Model.Reward)<sub>元</sub></span>名额<span class="mpeople">@Model.RewardPeopleNum<sub>名</sub></span></div>
+
+        <div class="reward-st">未被领取的红包</div>
+        @for (var i = 0; i < rewards.Length; i++)
+        {
+            if (i == ulist.Count)
+            {
+                <div class="xscur"><span class="num">@Html.Raw(i + 1).</span><span class="name">当前金额</span><a>&nbsp;</a><span class="xsje current">@rewards[i]</span></div>
+            }
+            if (i > ulist.Count)
+            {
+                <div class="xswl"><span class="num">@Html.Raw(i + 1).</span><span class="name">红包金额</span><a>&nbsp;</a><span class="xsje">@rewards[i]</span></div>
+
+            }
+        }
+        <div class="reward-st" style="margin-top: .5rem">已被领取的红包</div>
+        @for (var i = 0; i < rewards.Length; i++)
+        {
+            if (i < ulist.Count && ulist[i] != null)
+            {
+                <div class="xsyl"><span class="num">@Html.Raw(i + 1).</span><img class="gray" src="@ulist[i].ImgUrl"><span class="name">@ulist[i].Username</span><a>&nbsp;</a><span class="xsje">@rewards[i]</span></div>
+            }
+
+        }
+        <div class="iknow-green close-popup" onclick="$.closeModal();">我明白了，去答题！</div>
+        @*   <div class="xsclose"><span>&nbsp;</span><a class="close-popup"></a></div>*@
+    </div>
+    <div class="popup popup-report">
+        <div class="content-block">
+            <div class="xqjbti">举报@@<span>娜斯提娅·库萨齐纳</span>的<samp>谜题</samp>:</div>
+            <div class="jbtabbox">
+                <div class="jbrow row">
+                    <div class="col-50">
+                        @*style="border-right: 1px gainsboro dotted"*@
+                        <div class="jbtabli selected" data-key="@ReportType.JunkMarketing"><a><span>&nbsp;</span></a><span>垃圾营销</span></div>
+                        <div class="jbtabli" data-key="@ReportType.Harmful"><a><span>&nbsp;</span></a><span>有害信息</span></div>
+                        <div class="jbtabli" data-key="@ReportType.Pornographic"><a><span>&nbsp;</span></a><span>淫秽色情</span></div>
+                        <div class="jbtabli" data-key="@ReportType.Attack"><a><span class="none">&nbsp;</span></a><span>对我人身攻击</span></div>
+                    </div>
+                    <div class="col-50">
+                        <div class="jbtabli" data-key="@ReportType.Unreal"><a><span>&nbsp;</span></a><span>不实信息</span></div>
+                        <div class="jbtabli" data-key="@ReportType.Illegal"><a><span>&nbsp;</span></a><span>违法信息</span></div>
+                        @*<div class="jbtabli" data-key="@ReportType.Plagiarism"><a><span>&nbsp;</span></a><span>抄袭我的谜题</span></div>*@
+                    </div>
+                </div>
+                <input type="button" value="举报" class="xqjbbtn">
+
+            </div>
+        </div>
+        <div class="xsclose1"><span>&nbsp;</span><a class="close-popup"></a></div>
+    </div>
+    <div class="popup popup-shared">
+        <div class="content-block">
+            <div class="shareinfo">
+                <img src="~/images/line.png" />
+            </div>
+            <div class="text-center" style="color: white">你现在可以分享你发布的谜题了</div>
+            <div class="hyxqbtn ikown"><a class="close-popup">我知道了</a></div>
+        </div>
+    </div>
+    <input type="hidden" value="@Model.Id" id="qxsd" />
+</div>
+<script>
+
+    $(function () {
+        //判断是否是自己或者已经答对过的人
+        if ($("#isSelf").val() == 1 || $("#answerstate").val() == 1) {
+            $(".buyTag").addClass("die");
+        } else {
+            $(".doanswer,.buyTag").removeClass("die");
+        }
+        $(".resend").removeClass("die");
+        var id = $("#qxsd").val();
+        tools.editeWxTitle("好油菜");
+        $(".resendThisQuestion").attr("data-id", id).attr("data-href", '@Url.Action("CreateStep3","Question",new{id=Model.Id})');
+        var key = "q" + id;
+        console.log(localStorage[key], $("#isSelf").val());
+        if (!localStorage[key] && $("#isSelf").val() == 1) {
+            localStorage[key] = true;
+            $.popup(".popup-shared");
+        } else {
+            //已经回答正确
+            if ($("#answerstate").val()) {
+                //$("#turnTitle").html("您已经领取过悬赏了！");
+                $.popup(".popup-turn");
+            }
+                //谜题已经结束
+            else if ($("#questionstate").val()) {
+                //$("#turnTitle").html("这个谜题已经已经结束啦！");
+                //$.popup(".popup-turn");
+            } else {
+                $.popup(".popup-reward");
+            }
+        }
+    });
+
+    @*$.post('@Url.Action("HasShowShare","Question")', { id: id }, function (res) {
+        if (res === false) {
+            $.popup(".popup-shared");
+        } else {
+            //已经回答正确
+            if ($("#answerstate").val()) {
+                //$("#turnTitle").html("您已经领取过悬赏了！");
+                $.popup(".popup-turn");
+            }
+                //谜题已经结束
+            else if ($("#questionstate").val()) {
+                //$("#turnTitle").html("这个谜题已经已经结束啦！");
+                //$.popup(".popup-turn");
+            } else {
+                $.popup(".popup-reward");
+            }
+        }
+    });*@
+    function share(type) {
+        $.post('@Url.Action("Shared")', { id: id, type: type }, function (j) { console.log("share", j) });
+    }
+
+    var time = '@ViewBag.Share.timestamp';
+    wx.config({
+        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+        appId: '@ViewBag.Share.appId', // 必填，公众号的唯一标识
+        timestamp: parseInt(time), // 必填，生成签名的时间戳
+        nonceStr: '@ViewBag.Share.nonceStr', // 必填，生成签名的随机串
+        signature: '@ViewBag.Share.signature',// 必填，签名，见附录1
+        jsApiList: ["checkJsApi", "onMenuShareTimeline", "onMenuShareAppMessage", "onMenuShareWeibo", "onMenuShareQQ", "onMenuShareQZone"] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+    });
+
+    wx.ready(function () {
+        //朋友圈
+        var title = "猜谜抢红包!@Model.User.Username 想和你搞事情！";
+        var modelTitle = '好油菜:@Model.Title';
+        var shareUrl = '@ViewBag.Share.url';
+        var imgurl = '@ViewBag.imgUrl';
+        wx.onMenuShareTimeline({
+            title: title + "," + modelTitle, // 分享标题
+            link: shareUrl, // 分享链接
+            imgUrl: imgurl,
+            success: function (res) {
+                share("微信朋友圈");
+                // alert("已分享");
+            },
+            cancel: function (res) {
+                // alert('已取消');
+            },
+            fail: function (res) {
+                // alert(JSON.stringify(res));
+            }
+        });
+        //朋友
+        wx.onMenuShareAppMessage({
+            title: title, // 分享标题
+            desc: modelTitle, // 分享描述
+            link: shareUrl, // 分享链接
+            imgUrl: imgurl,
+            type: '', // 分享类型,music、video或link，不填默认为link
+            dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                share("微信朋友");
+                //  alert("分享");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+                // alert("取消分享");
+            }
+        });
+        wx.onMenuShareQQ({
+            title: title, // 分享标题
+            desc: modelTitle, // 分享描述
+            link: shareUrl, // 分享链接
+            imgUrl: imgurl,
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                share("QQ");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareWeibo({
+            title: title, // 分享标题
+            desc: modelTitle, // 分享描述
+            link: shareUrl, // 分享链接
+            imgUrl: imgurl,
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                share("腾讯微博");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+        wx.onMenuShareQZone({
+            title: title, // 分享标题
+            desc: modelTitle, // 分享描述
+            link: shareUrl, // 分享链接
+            imgUrl: imgurl,
+            success: function () {
+                // 用户确认分享后执行的回调函数
+                share("QQ空间");
+            },
+            cancel: function () {
+                // 用户取消分享后执行的回调函数
+            }
+        });
+    });
+
+</script>

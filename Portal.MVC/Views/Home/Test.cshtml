@@ -1,0 +1,25 @@
+﻿@using Niqiu.Core.Helpers
+@model Portal.MVC.Models.ImgModel
+
+@{
+    ViewBag.Title = "Test";
+    Layout = null;
+}
+
+DisplayFor:
+@Html.DisplayFor(model => model.Img) <br/>
+
+Image:
+@Html.Image(Model.Img,100) <br/>
+
+ImageFor:
+@Html.ImageFor(n=>Model.Img) <br/>
+@Html.ImageFor(n=>Model.Img,new{width = "100px"} ) <br/>
+ 
+
+Partial:
+@Html.Partial("tableimg",Model.Img) <br/>
+
+@Html.TextBoxFor(n=>Model.Img)
+
+ 

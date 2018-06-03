@@ -1,0 +1,19 @@
+﻿@model ChatModel
+
+@foreach (var msg in Model.Messages)
+{
+    if (msg.FromUserId == Model.Me.Id)
+    {
+        <div data-id="@msg.Id" class="client">
+            <div class="message ">@Html.Raw(msg.Content)</div>
+            <a class='avatar'><img src='@Model.Me.ImgUrl' alt='' /> </a>
+        </div>
+    }
+    else
+    {
+        <div data-id="@msg.Id" class="server">
+            <a class='avatar'><img src='@Model.ToUser.ImgUrl' alt='' /> </a>
+            <div class="message">@Html.Raw(msg.Content)</div>
+        </div>
+    }
+}

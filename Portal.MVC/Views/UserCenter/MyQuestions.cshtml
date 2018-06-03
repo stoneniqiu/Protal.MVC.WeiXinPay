@@ -1,0 +1,60 @@
+﻿@{
+    ViewBag.Title = "我的谜题";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div id="myquestions" class="page">
+    @Html.Partial("m_header")
+    <div class="content">
+        <ul id="mysul" class="tab tabfb">
+            <li  data-key="false">未被领取悬赏</li>
+            <li data-key="true">已被领取悬赏</li>
+        </ul>
+        <ul id="joinul" class="tab tabfb">
+            <li data-key="false">未获得悬赏</li>
+            <li data-key="true">已获得悬赏</li>
+        </ul>
+
+        <div id="mypage">
+            @Html.Action("MyQuestionsPage")
+        </div>
+        @*<div class="buttons-tab">
+            <a href="#tab1" class="tab-link active button">我发布的谜题</a>
+            <a href="#tab2" class="tab-link button">我参与的谜题</a>
+        </div>
+        <div class="content-block">
+            <div class="tabs">
+                <div id="tab1" class="tab active">
+                    <div class="content-block">
+                        <div class="buttons-row my">
+                            <a href="#" data-key="false" class="button">未被领取悬赏</a><a href="#" data-key="true" class="button">已被领取悬赏</a>
+                        </div>
+                        <div class="myPage my">
+                            @Html.Action("MyQuestionsPage")
+                        </div>
+                    </div>
+                </div>
+                <div id="tab2" class="tab">
+                    <div class="content-block">
+                        <div class="buttons-row join">
+                            <a href="#" data-key="false" class="button">未获得悬赏</a><a href="#" data-key="true" class="button">已获得悬赏</a>
+                        </div>
+                        <div class="myPage join">
+                            @Html.Action("JoinQuestionPage")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+        <div class="wdbtm">
+            <div class="wdbtn"><span>我发布的</span><img id="up" src="/images/xqico4.png"> <img id="down" src="/images/xqico44.png"></div>
+            <div class="wdbtmbl">
+                @*<a id="allq" href="#" class="cur">全部谜题</a>*@
+                <a id="myq" href="#">我发布的</a>
+                <a id="joinq" href="#">我参与的</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+  tools.editeWxTitle("我的谜题");
+</script>

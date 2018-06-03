@@ -1,0 +1,20 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .error_ex {
+        text-align: center;
+    }
+        .error_ex h1 {
+            font-size: 140px;
+            font-weight: bold;
+            padding: 50px 0;
+            color: #28B779;
+        }
+</style>
+<div class="error_ex">
+    <h1>500</h1>
+    <h3>对不起，页面出错了~</h3>
+    <a class="btn btn-warning btn-big" href="@Url.Action("Index","Home")">返回首页</a>
+</div>

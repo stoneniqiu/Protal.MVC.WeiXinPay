@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Niqiu.Core.Domain.Payments.Wallet>
+
+@{
+    ViewBag.Title = "钱包管理";
+    Layout = "~/Views/Shared/_Admin.cshtml";
+}
+@Html.Partial("_adminMap")
+<style>
+    .avt img{width: 50px;height: 50px;}
+</style>
+<div class="container-fluid">
+    <div class="widget-box">
+        <div class="widget-title">
+            <span class="icon"><i class="icon-th"></i></span>
+            <h5>@ViewBag.Title</h5>
+
+        </div>
+        <div class="widget-content nopadding">
+            <table class="table table-bordered data-table">
+                <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户名</th>
+                        <th>用户名</th>
+                        <th>金额</th>
+                        <th>创建时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@(item.Id-2)</td>
+                            <td>@item.User.Username</td>
+                            <td class="avt"><img src="@item.User.ImgUrl"/></td>
+                            <td>@item.Balance</td>
+                            <td>
+                                @item.CreateTime
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="8">总记录:@Model.Count()  </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>
+
+<script>
+    $(".btn-danger").click(function() {
+        admin.deleteItems(null, '@Url.Action("Delete")');
+    })
+</script>
+ 

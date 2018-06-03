@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Niqiu.Core.Domain.User.User>
+
+ <table class="table table-bordered data-table">
+    <thead>
+        <tr>
+         @*   <th><input type="checkbox" id="title-checkbox" name="title-checkbox" />全选</th>*@
+            <th>序号</th>
+            <th>用户名</th>
+            <th>手机</th>
+            <th>邮箱</th>
+            <th>上次登录时间</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+               @* <td><input type="checkbox"/></td>*@
+                <td>@item.Id</td>
+                <td>@item.Username</td>
+                <td>@item.Mobile</td>
+                <td>@item.Email</td>
+                <td>@item.SimpleTime(item.LastActivityDateUtc)</td>
+                <td>@item.SimpleTime()</td>
+                <td>
+                    <a href="@Url.Action("Index", "Fs", new { userid =item.Id})">查看好友</a>
+                    <a href="@Url.Action("JoinedQuestions",new{userid=item.Id})">历史参与</a>
+                    <a href="@Url.Action("Edit",new{id=item.Id})">编辑</a>
+                    <a class="deleta" data-id="@item.Id">删除</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="8">总记录:@Model.Count()</td>
+        </tr>
+    </tfoot>
+</table>
+
+
+<script src="~/Content/Matrix_Admin/js/jquery.uniform.js"></script>
+<script src="~/Content/Matrix_Admin/js/select2.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/jquery.dataTables.min.js"></script>
+<script src="~/Content/Matrix_Admin/js/matrix.tables.js"></script>

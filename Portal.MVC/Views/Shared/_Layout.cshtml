@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <!-- UC默认竖屏 ，UC强制全屏 -->
+    <meta name="full-screen" content="yes">
+    <meta name="browsermode" content="application">
+    <!-- QQ强制竖屏 QQ强制全屏 -->
+    <meta name="x5-orientation" content="portrait">
+    <meta name="x5-fullscreen" content="true">
+    <meta name="x5-page-mode" content="app">
+    <title>@ViewBag.Title</title>
+    @*<link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm.min.css">
+        <link rel="stylesheet" href="//g.alicdn.com/msui/sm/0.6.2/css/sm-extend.min.css">*@
+    <link href="~/css/sm.min.css" rel="stylesheet" />
+    <link href="~/css/hyc.css?v=0.01" rel="stylesheet" />
+    <script src="~/js/zepto.min.js"></script>
+    <script src="~/js/sm.js"></script>
+    <script src="~/js/h5upload.js"></script>
+    <link href="~/v2/v2.css" rel="stylesheet" />
+    <script>
+        var tools = {};
+        tools.editeWxTitle = function (title) {
+            if (/micromessenger/i.test(navigator.userAgent)) {
+                var $body = $('body');
+                document.title = title;    // hack在微信等webview中无法修改document.title的情况
+                var $iframe = $('<iframe src="/favicon.ico"></iframe>').on('load', function() {
+                    setTimeout(function() { $iframe.off('load').remove(); }, 0);
+                }).appendTo($body);
+            }
+        }
+        function Sweep($ele,leftCallback,rightCallback) {
+            var startPosition, endPosition, deltaX, deltaY, moveLength;
+            $ele.bind('touchstart', function (e) {
+                var touch = e.touches[0];
+                startPosition = {
+                    x: touch.pageX,
+                    y: touch.pageY
+                }
+            }).bind('touchmove', function (e) {
+                var touch = e.touches[0];
+                endPosition = {
+                    x: touch.pageX,
+                    y: touch.pageY
+                };
+
+                deltaX = endPosition.x - startPosition.x;
+                deltaY = endPosition.y - startPosition.y;
+                moveLength = Math.sqrt(Math.pow(Math.abs(deltaX), 2) + Math.pow(Math.abs(deltaY), 2));
+            }).bind('touchend', function (e) {
+                console.log(deltaX);
+                if (deltaX < -20) { // 向左划动  
+                    console.log("向左划动");
+                    if (typeof leftCallback == "function") {
+                        leftCallback($(this));
+                    }
+                } else if (deltaX > 20) { // 向右划动  
+                    console.log("向右划动");
+                    if (typeof rightCallback == "function") {
+                        rightCallback($(this));
+                    }
+                }
+            });
+        };
+    </script>
+</head>
+<body>
+
+    <div class="page-group">
+        @RenderBody()
+    </div>
+
+    @*<script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
+        <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>*@
+
+    <script src="~/js/client.js?v=0.02"></script>
+
+
+    @RenderSection("scripts", required: false)
+
+    <script>
+    var _hmt = _hmt || [];
+    (function () {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?6da8d6f484aede10275d7a2a8bd0fd3b";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+</body>
+</html>

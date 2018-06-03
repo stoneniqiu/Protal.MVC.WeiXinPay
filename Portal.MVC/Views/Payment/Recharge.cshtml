@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "充值";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div id="rechargepage" class="page">
+    @Html.Partial("m_header")
+    <div class="content">
+        <input id="rechargeval" type="number" value="5" placeholder="充值金额"/>
+        <button id="rechargebt" class="button button-fill button-danger">充值</button>
+    </div>
+</div>

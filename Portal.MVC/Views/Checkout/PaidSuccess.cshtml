@@ -1,0 +1,28 @@
+﻿@using Niqiu.Core.Domain.Payments
+@model  Niqiu.Core.Domain.Payments.Order
+
+@{
+    ViewBag.Title = "PaidSuccess";
+}
+<style>
+     .container .row{ margin-left: 0;margin-right: 0;}
+</style>
+<div class="container">
+    <div class="row">
+        <div class="page">
+            <div class="page-header">
+                <div class="row header">
+                    @if (Model.OrderState == OrderState.Success)
+                    {
+                        <h2>支付成功！</h2>
+                    }
+                    else
+                    {
+                        <h2>支付失败！</h2>
+                    }
+                </div>
+                <div>订单号：@Model.TradeNumber</div>
+            </div>
+        </div>
+    </div>
+</div>

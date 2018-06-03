@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "我的钱包";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Niqiu.Core.Domain.Payments.Wallet
+
+<div class="page">
+    @Html.Partial("m_header")
+    <div class="content">
+        <div class="zlbox">
+            <div class="qbtop">
+                <p>我的余额(元)</p>
+                <span>@Model.Balance</span>
+            </div>
+            <div class="qbbox">
+                <a href="@Url.Action("List")" class="wdblock zdico">
+                    <img src="/images/wdzd.png">
+                    <span>我的账单</span>
+                </a>
+                @*<a href="@Url.Action("BankCards")" class="wdblock yhkico">
+                    <img src="/images/wdyhk.png">
+                    <span>我的银行卡</span>
+                </a>*@
+            </div>
+        </div>
+        <div class="qbbts">
+            <a href="@Url.Action("ToCash")">提现</a>
+            @*<a href="@Url.Action("Recharge")">充值</a>*@
+        </div>
+    </div>
+</div>
+<script>
+   // tools.editeWxTitle("我的钱包");
+</script>

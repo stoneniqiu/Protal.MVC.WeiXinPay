@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "充值";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Niqiu.Core.Domain.Payments.Wallet
+
+<div class="page">
+    @Html.Partial("m_header")
+    <div class="content">
+        <div class="bkmi textintend1">账户余额:<span id="balance">@Model.Balance.ToString("c")</span></div>
+        <div class="content-padded moneys">
+            <div class="row">
+                <div class="col-33 text-center"><div class="moneybox" data-key="5" >5元</div></div>
+                <div class="col-33 text-center"><div class="moneybox" data-key="20">20元</div></div>
+                <div class="col-33 text-center"><div class="moneybox" data-key="50">50元</div></div>
+            </div>
+            <div class="row">
+                <div class="col-33 text-center">
+                    <div class="moneybox" data-key="100">
+                        100元
+                        <div>成为VIP用户</div>
+                    </div>
+                </div>
+                <div class="col-33 text-center">
+                    <div class="moneybox" data-key="500">
+                        500元
+                        <div>成为白银VIP用户</div>
+                    </div>
+                </div>
+                <div class="col-33 text-center">
+                    <div class="moneybox" data-key="1000">
+                        1000元
+                        <div>成为铂金VIP用户</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-33 text-center">
+                    <div id="othermoney" class="moneybox" data-key="0">
+                        其他金额
+                        <div>点击输入</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

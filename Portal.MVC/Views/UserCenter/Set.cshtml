@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "设置";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .item-title a{color: #333}
+</style>
+<div class="page" id="userdetail">
+    @Html.Partial("m_header")
+    <div class="content">
+        
+        <div class="szblock">
+            <a href="@Url.Action("ChangePayPassword")">
+                <img src="~/images/szico.png">
+                <span>支付密码设置</span>
+            </a>
+        </div>
+        @*<div class="szblock">
+            <a href="@Url.Action("ChangePassword")">
+                <img src="~/images/szico.png">
+                <span>帐号密码设置</span>
+            </a>
+        </div>*@
+        <div class="szblock">
+            <a href="@Url.Action("About")">
+                <img src="~/images/szico.png">
+                <span>关于好油菜与反馈</span>
+            </a>
+        </div>
+        @*<input type="button" class="szbtn" id="logoff" value="注销登录">*@
+
+         
+    </div>
+</div>
+<script>
+    tools.editeWxTitle("我的设置");
+</script>
