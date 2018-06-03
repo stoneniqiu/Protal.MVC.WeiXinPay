@@ -52,8 +52,8 @@ namespace Portal.MVC.Controllers
         {
             InstallQuestionStrategies();
             InstallSystemWallet();
-            InstallAdmin();
             InstallPermission();
+            InstallAdmin();
             return Content("success");
         }
 

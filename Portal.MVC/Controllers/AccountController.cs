@@ -393,7 +393,9 @@ namespace Portal.MVC.Controllers
                 if (registrationResult.Success)
                 {
                     AuthenticationService.SignIn(user, true);
-                    Success("注册成功!初始密码为学号，请修改密码");
+                    //需要更新当前用户为新用户
+                    _workContext.CurrentUser = _service.GetUserByUsername(user.Username);
+                   // Success("注册成功!初始密码为学号，请修改密码");
                     if (String.IsNullOrEmpty(returnUrl) || !Url.IsLocalUrl(returnUrl))
                         return RedirectToAction("Index", "Home");
                     return Redirect(returnUrl);

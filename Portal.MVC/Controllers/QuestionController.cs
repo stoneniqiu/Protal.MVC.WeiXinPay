@@ -727,7 +727,10 @@ namespace Portal.MVC.Controllers
         private User _currentUser;
         public User CurrentUser
         {
-            get { return _currentUser ?? (_currentUser = _workContext.CurrentUser); }
+            get
+            {
+                return _currentUser ?? (_currentUser = _workContext.CurrentUser);
+            }
             set { _currentUser = value; }
         }
     }
