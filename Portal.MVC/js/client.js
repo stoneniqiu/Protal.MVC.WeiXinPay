@@ -45,6 +45,7 @@ function createOrderAndPay(money, success, faill) {
             $.post("/Checkout/H5PayJson", { orederId: orderId }, function (jsondata) {
                 if (jsondata.IsSuccess === false) {
                     $.toast(jsondata.Message);
+                    $.hidePreloader();
                     return;
                 }
                 var jdata = JSON.parse(jsondata);
@@ -70,7 +71,6 @@ function createOrderAndPay(money, success, faill) {
             return;
         }
         $.toast(orderdata.Error);
-        $.hidePreloader();
     });
 }
 
