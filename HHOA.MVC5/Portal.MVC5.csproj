@@ -417,7 +417,6 @@
     <Content Include="Files\stoneniqiu\2018-02-11\20180211213806678-2018-01-30 123310.jpg" />
     <Content Include="Files\stoneniqiu\2018-02-11\20180211214033655-2018-01-30 104016.jpg" />
     <Content Include="Files\stoneniqiu\2018-02-11\20180211214447646-2018-01-30 103948.jpg" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
@@ -499,9 +498,6 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
