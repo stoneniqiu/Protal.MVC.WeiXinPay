@@ -209,6 +209,11 @@ namespace Niqiu.Core.Services
             if (String.IsNullOrEmpty(permissionRecordSystemName))
                 return false;
 
+            if (!user.UserRoles.Any())
+            {
+                return false;
+            }
+
             var customerRoles = user.UserRoles.Where(cr => cr.Active);
             foreach (var role in customerRoles)
                 if (Authorize(permissionRecordSystemName, role))

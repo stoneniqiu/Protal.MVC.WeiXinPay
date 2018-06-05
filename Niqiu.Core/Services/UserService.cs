@@ -4,23 +4,22 @@ using System.Linq;
 using Niqiu.Core.Domain;
 using Niqiu.Core.Domain.Common;
 using Niqiu.Core.Domain.User;
-using Niqiu.Core.Helpers;
 
 namespace Niqiu.Core.Services
 {
    public class UserService:IUserService
    {
        private readonly IRepository<User> _useRepository;
+       private readonly IRepository<School> _schoolRepository;
        private readonly IRepository<UserRole> _userRoleRepository;
        private readonly  ICacheManager _cacheManager ;
-       private readonly IRepository<Feeback> _fRepository; 
 
-       public UserService(IRepository<User> useRepository, IRepository<Feeback> fRepository,IRepository<UserRole> userRoleRepository,ICacheManager cacheManager)
+       public UserService(IRepository<User> useRepository,IRepository<School> schoolRepository,IRepository<UserRole> userRoleRepository,ICacheManager cacheManager)
        {
            _useRepository = useRepository;
            _userRoleRepository = userRoleRepository;
            _cacheManager = cacheManager;
-           _fRepository = fRepository;
+           _schoolRepository = schoolRepository;
        }
 
 
@@ -57,12 +56,24 @@ namespace Niqiu.Core.Services
 
        }
 
+       public void AddSchoolName(string name)
+       {
+           if (!_schoolRepository.Table.Any(n => n.Name == name))
+           {
+               _schoolRepository.Insert(new School()
+               {
+                   Name = name
+               });
+           }
+   
+       }
+
        public void UpdateUser(User user)
        {
            if (user == null)
                throw new ArgumentNullException("user");
            _useRepository.Update(user);
-       
+
            //还触发了事件通知！
            //_eventPublisher.EntityUpdated(customer);
        }
@@ -110,10 +121,20 @@ namespace Niqiu.Core.Services
        {
            return string.IsNullOrWhiteSpace(mobile) ? null : _useRepository.Table.FirstOrDefault(n => n.Mobile == mobile);
        }
+       public User GetUserBySchoolNumber(string schoolNumber)
+       {
+           return string.IsNullOrWhiteSpace(schoolNumber) ? null : _useRepository.Table.FirstOrDefault(n => n.SchoolNumber == schoolNumber);
+       }
 
-       public IPagedList<User> GetAllUsers(string username = null, string email = "", int pageIndex = 0, int pageSize = 2147483647)
+       public bool CheckUserBySchoolNumberOrIdCard(string schoolNumber, string idCard)
+       {
+           return _useRepository.Table.Any(n => n.SchoolName == schoolNumber || n.IDCard == idCard);
+       }
+       public IPagedList<User> GetAllUsers(string schoolName = null, string username = null, string email = "", int pageIndex = 0, int pageSize = 2147483647)
        {
            var query = _useRepository.Table.Where(n=>!n.Deleted);
+           if (!String.IsNullOrWhiteSpace(schoolName))
+               query = query.Where(c => c.SchoolNumber.Contains(schoolName));
            if (!String.IsNullOrWhiteSpace(email))
                query = query.Where(c => c.Email.Contains(email));
            if (!String.IsNullOrWhiteSpace(username))
@@ -240,44 +261,6 @@ namespace Niqiu.Core.Services
        }
 
 
-       #endregion
-
-       public void Feeback(User user, string content)
-       {
-           if (user != null&&!string.IsNullOrWhiteSpace(content))
-           {
-               var fb = new Feeback()
-               {
-                   UserId = user.Id,
-                   UserName = user.Username,
-                   Content = content
-               };
-               _fRepository.Insert(fb);
-           }
-
-       }
-
-       public bool SetPaymentPassword(int userid, string password)
-       {
-           var user = _useRepository.GetById(userid);
-           if (user != null&&!string.IsNullOrEmpty(password)&&password.Length>=6)
-           {
-               user.PaymentPassword = Encrypt.EncryptString(password);
-                UpdateUser(user);
-               return true;
-           }
-           return false;
-       }
-       public bool ValidPaymentPassword(int userid, string password)
-       {
-           var user = _useRepository.GetById(userid);
-           var x=Encrypt.EncryptString(password);
-           return user.PaymentPassword == x;
-       }
-
-       public User GetUserByOpenId(string openId)
-       {
-           return string.IsNullOrWhiteSpace(openId) ? null : _useRepository.Table.FirstOrDefault(n => n.OpenId == openId);
-       }
+       #endregion 
    }
 }

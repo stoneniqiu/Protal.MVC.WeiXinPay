@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<form action="/api/FileService/Upload" method="post" enctype="multipart/form-data">
+    <input type="file" id="FileUpload" name="files" />
+    <input type="text" id="token" name="token" value="12334" />
+    <button type="submit">提交</button>
+    <button type="button" id="loginbtn">login</button>
+    <button type="button" id="ajaxbtn">ajaxbtn</button>
+</form>
+
+<script>
+
+    $("#loginbtn").click(function () {
+        var username = $("#username").val();
+        var pwd = $("#password").val();
+        $.post("/api/Identy/login", { uname: "stoneniqiu", pwd: "123456" }, function (data) {
+            $("#token").val(data.Data);
+            $(".log").html(JSON.stringify(data))
+        })
+    })
+
+    //ajax 设置请求头
+
+    $("#ajaxbtn").click(function () {
+        var token = $("#token").val() || "xsadad";
+        $.ajax({
+            url: "/api/FileService/Upload",
+            type: "post",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('token', token);
+            },
+            success: function (data) {
+                console.log(data);
+            }
+        })
+    })
+</script>

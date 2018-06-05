@@ -1,0 +1,47 @@
+﻿@{
+    ViewBag.Title = "AuthTest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .log{color:gray;font-size:small;}
+    input{border:1px solid gray}
+</style>
+<h2>AuthTest</h2>
+<div>
+    <input type="text" id="username" value="stoneniqiu" />
+    <input type="text" id="password" value="123456" />
+    <div>
+        <input type="text" id="token" value="" />
+    </div>
+    <button id="registerbtn">注册</button>
+    <button id="loginbtn">登陆</button>
+    <button id="validbtn">验证</button>
+   <div class="log">
+
+   </div>    
+</div>
+<script>
+    
+    $("#registerbtn").click(function () {
+        var username = $("#username").val();
+        var pwd = $("#password").val();
+        $.post("/api/Identy/Register", { UserName: username, PassWord: pwd }, function (data) {
+            $("#token").val(data.Data);
+            $(".log").html(JSON.stringify(data))
+
+        })
+    })
+    $("#loginbtn").click(function () {
+        var username = $("#username").val();
+        var pwd = $("#password").val();
+        $.post("/api/Identy/login", { uname: username, pwd: pwd }, function (data) {
+            $("#token").val(data.Data);
+            $(".log").html(JSON.stringify(data))
+        })
+    })
+    $("#validbtn").click(function () {
+        $.post("/api/Identy/Authen?token=" + $("#token").val(), { token: $("#token").val() }, function (data) {
+            $(".log").html(JSON.stringify(data))
+        })
+    })
+</script>

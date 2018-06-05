@@ -14,23 +14,27 @@ namespace Niqiu.Core.Domain
         [Required(ErrorMessage = "请输入姓名")]
         public string Name { get; set; }
 
+        public int UserId { get; set; }
+
         [Display(Name = "性别")]
         [Required(ErrorMessage = "请选择性别")]
         public Gender Gender { get; set; }
 
         [Display(Name = "身份")]
-        [Required(ErrorMessage = "请选择身份")]
-        public Identity Identity { get; set; }
+       // [Required(ErrorMessage = "请选择身份")]
+        public int Identity { get; set; }
+
+
         [Display(Name = "学(工)号")]
         [Required(ErrorMessage = "请输入学(工)号")]
         public string SchoolNumber { get; set; }
         [Display(Name = "手机号")]
-        [Required(ErrorMessage = "请输入手机")]
-        [RegularExpression(@"^1[3458][0-9]{9}$", ErrorMessage = "手机号格式不正确")]
+        //[Required(ErrorMessage = "请输入手机")]
+       // [RegularExpression(@"^1[3458][0-9]{9}$", ErrorMessage = "手机号格式不正确")]
         public string Mobile { get; set; }
         [Display(Name = "身份证号")]
-        [Required(ErrorMessage = "请输入身份证号")]
-        [RegularExpression(@"(^[1-9][0-9]{5}((19[0-9]{2})|(200[0-9])|2011)(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[0-9]{3}[0-9xX]$)", ErrorMessage = "请输入正确的身份证号")]
+        //[Required(ErrorMessage = "请输入身份证号")]
+       // [RegularExpression(@"(^[1-9][0-9]{5}((19[0-9]{2})|(200[0-9])|2011)(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])[0-9]{3}[0-9xX]$)", ErrorMessage = "请输入正确的身份证号")]
         public string IdCard { get; set; }
 
         [Display(Name = "院系")]
@@ -55,6 +59,47 @@ namespace Niqiu.Core.Domain
         [Display(Name = "申请状态")]
         public VerifyState State { get; set; }
 
+        #region 车证专用
+
+        [Display(Name = "员工卡")]
+        public string WrokImg { get; set; }
+
+        [Display(Name = "身份证正面照")]
+        public string IDCardImg { get; set; }
+
+        [Display(Name = "身份证反面照")]
+        public string IDCardImgBack { get; set; }
+
+        [Display(Name = "驾驶证/行驶证正面照片")]
+        public string DriveCardImg { get; set; }
+
+        [Display(Name = "驾驶证/行驶证反面照片")]
+        public string DriveCardImgBack { get; set; }
+
+        [Display(Name = "结婚证照片")]
+        public string MarryCardImg { get; set; }
+
+        [Display(Name = "车牌号")]
+        public string CardNumber { get; set; }
+
+        [Display(Name = "品牌")]
+        public string Brand { get; set; }
+
+        [Display(Name = "颜色")]
+        public string Color { get; set; }
+
+
+        [Display(Name = "编号")]
+        public string BianHao { get; set; }
+
+        [Display(Name = "车牌号")]
+        public string CardNumber2 { get; set; }
+
+        [Display(Name = "车型")]
+        public string CarStyle { get; set; }
+
+        #endregion
+
         //[Display(Name = "审核人")]
         //public string UserName { get; set; }
 
@@ -68,6 +113,7 @@ namespace Niqiu.Core.Domain
         //[Display(Name = "申请人")]
         //public virtual string ApplyUserName { get; set; }
     }
+
 
 
     public enum Identity

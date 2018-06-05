@@ -8,6 +8,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web;
+using System.Web.Hosting;
+using System.Xml;
 using Niqiu.Core.Domain;
 
 namespace Niqiu.Core.Helpers
@@ -17,130 +19,18 @@ namespace Niqiu.Core.Helpers
     /// </summary>
     public partial class CommonHelper
     {
-        /// <summary> 
-        /// 返回字符串的首写字母字符串 
-        /// </summary> 
-        /// <param name="IndexTxt">需得到首写字母的字符串</param> 
-        /// <returns></returns> 
-        public static String UtilIndexCode(String IndexTxt)
+
+        public static string ReturnPhoneNO(string phoneNo)
         {
-            string _Temp = null;
-            for (int i = 0; i < IndexTxt.Length; i++)
-                _Temp = _Temp + GetOneIndex(IndexTxt.Substring(i, 1));
-            return _Temp;
+            Regex re = new Regex(@"(\d{3})(\d{4})(\d{4})", RegexOptions.None);
+            phoneNo = re.Replace(phoneNo, "$1****$3");
+            return phoneNo;
         }
-
-        //得到单个字符的首字母 
-        private static String GetOneIndex(String OneIndexTxt)
+        public static string ReturnEmail(string Email)
         {
-            if (Convert.ToChar(OneIndexTxt) >= 0 && Convert.ToChar(OneIndexTxt) < 256)
-                return OneIndexTxt;
-            else
-                return GetGbkX(OneIndexTxt);
-        }
-
-        //根据汉字拼音排序得到首字母 
-        private static string GetGbkX(string str)
-        {
-            if (str.CompareTo("吖") < 0)
-            {
-                return str;
-            }
-            if (str.CompareTo("八") < 0)
-            {
-                return "A";
-            }
-
-            if (str.CompareTo("嚓") < 0)
-            {
-                return "B";
-            }
-
-            if (str.CompareTo("咑") < 0)
-            {
-                return "C";
-            }
-            if (str.CompareTo("妸") < 0)
-            {
-                return "D";
-            }
-            if (str.CompareTo("发") < 0)
-            {
-                return "E";
-            }
-            if (str.CompareTo("旮") < 0)
-            {
-                return "F";
-            }
-            if (str.CompareTo("铪") < 0)
-            {
-                return "G";
-            }
-            if (str.CompareTo("讥") < 0)
-            {
-                return "H";
-            }
-            if (str.CompareTo("咔") < 0)
-            {
-                return "J";
-            }
-            if (str.CompareTo("垃") < 0)
-            {
-                return "K";
-            }
-            if (str.CompareTo("呒") < 0)
-            {
-                return "L";
-            }
-            if (str.CompareTo("拏") < 0)
-            {
-                return "M";
-            }
-            if (str.CompareTo("噢") < 0)
-            {
-                return "N";
-            }
-            if (str.CompareTo("妑") < 0)
-            {
-                return "O";
-            }
-            if (str.CompareTo("七") < 0)
-            {
-                return "P";
-            }
-            if (str.CompareTo("亽") < 0)
-            {
-                return "Q";
-            }
-            if (str.CompareTo("仨") < 0)
-            {
-                return "R";
-            }
-            if (str.CompareTo("他") < 0)
-            {
-                return "S";
-            }
-            if (str.CompareTo("哇") < 0)
-            {
-                return "T";
-            }
-            if (str.CompareTo("夕") < 0)
-            {
-                return "W";
-            }
-            if (str.CompareTo("丫") < 0)
-            {
-                return "X";
-            }
-            if (str.CompareTo("帀") < 0)
-            {
-                return "Y";
-            }
-            if (str.CompareTo("咗") < 0)
-            {
-                return "Z";
-            }
-            return str;
+            Regex re = new Regex(@"\w{3}(?=@\w+?.\S+)", RegexOptions.None);
+            Email = re.Replace(Email, "****");
+            return Email;
         }
         public static bool ValidateString(string data, ValidataType datatype)
         {
@@ -201,92 +91,30 @@ namespace Niqiu.Core.Helpers
             }
             return ok;
         }
+
         /// <summary>
-        /// 身份证验证
+        /// 根据身份证号获取性别
         /// </summary>
-        /// <param name="Id">身份证号</param>
+        /// <param name="idnumber"></param>
         /// <returns></returns>
-        public static bool CheckIDCard(string Id)
+        public static bool IsManByIdNumber(string idnumber)
         {
-            if (Id.Length == 18)
+            if(string.IsNullOrEmpty(idnumber)) throw new Exception("身份证号不能为空");
+            if(idnumber.Length!=15&&idnumber.Length!=18) throw new Exception("身份证号为15位或十八位");
+            string birthday, sex="";
+            if (idnumber.Length == 18)
             {
-                bool check = CheckIDCard18(Id);
-                return check;
+               birthday = idnumber.Substring(6, 4) + "-" + idnumber.Substring(10, 2) + "-" + idnumber.Substring(12, 2);
+               sex = idnumber.Substring(14, 3);
             }
-            else if (Id.Length == 15)
+            if (idnumber.Length == 15)
             {
-                bool check = CheckIDCard15(Id);
-                return check;
+                birthday = "19" + idnumber.Substring(6, 2) + "-" + idnumber.Substring(8, 2) + "-" + idnumber.Substring(10, 2);
+                sex = idnumber.Substring(12, 3);
             }
-            else
-            {
-                return false;
-            }
+            return int.Parse(sex)%2 != 0;
         }
-        /// <summary>
-        /// 18位身份证验证
-        /// </summary>
-        /// <param name="Id">身份证号</param>
-        /// <returns></returns>
-        private static bool CheckIDCard18(string Id)
-        {
-            long n = 0;
-            if (long.TryParse(Id.Remove(17), out n) == false || n < Math.Pow(10, 16) || long.TryParse(Id.Replace('x', '0').Replace('X', '0'), out n) == false)
-            {
-                return false;//数字验证
-            }
-            string address = "11x22x35x44x53x12x23x36x45x54x13x31x37x46x61x14x32x41x50x62x15x33x42x51x63x21x34x43x52x64x65x71x81x82x91";
-            if (address.IndexOf(Id.Remove(2)) == -1)
-            {
-                return false;//省份验证
-            }
-            string birth = Id.Substring(6, 8).Insert(6, "-").Insert(4, "-");
-            DateTime time = new DateTime();
-            if (DateTime.TryParse(birth, out time) == false)
-            {
-                return false;//生日验证
-            }
-            string[] arrVarifyCode = ("1,0,x,9,8,7,6,5,4,3,2").Split(',');
-            string[] Wi = ("7,9,10,5,8,4,2,1,6,3,7,9,10,5,8,4,2").Split(',');
-            char[] Ai = Id.Remove(17).ToCharArray();
-            int sum = 0;
-            for (int i = 0; i < 17; i++)
-            {
-                sum += int.Parse(Wi[i]) * int.Parse(Ai[i].ToString());
-            }
-            int y = -1;
-            Math.DivRem(sum, 11, out y);
-            if (arrVarifyCode[y] != Id.Substring(17, 1).ToLower())
-            {
-                return false;//校验码验证
-            }
-            return true;//符合GB11643-1999标准
-        }
-        /// <summary>
-        /// 15位身份证验证
-        /// </summary>
-        /// <param name="Id">身份证号</param>
-        /// <returns></returns>
-        private static bool CheckIDCard15(string Id)
-        {
-            long n = 0;
-            if (long.TryParse(Id, out n) == false || n < Math.Pow(10, 14))
-            {
-                return false;//数字验证
-            }
-            string address = "11x22x35x44x53x12x23x36x45x54x13x31x37x46x61x14x32x41x50x62x15x33x42x51x63x21x34x43x52x64x65x71x81x82x91";
-            if (address.IndexOf(Id.Remove(2)) == -1)
-            {
-                return false;//省份验证
-            }
-            string birth = Id.Substring(6, 6).Insert(4, "-").Insert(2, "-");
-            DateTime time = new DateTime();
-            if (DateTime.TryParse(birth, out time) == false)
-            {
-                return false;//生日验证
-            }
-            return true;//符合15位身份证标准
-        }
+
         public static string ConverTime(double timesp)
         {
             var sec = 0;
@@ -312,18 +140,6 @@ namespace Niqiu.Core.Helpers
             return string.Format("{0}小时{1}", hour, min);
         }
 
-        public static string SimpleDate(DateTime date)
-        {
-            if (date.Date == DateTime.Today.Date)
-            {
-                return "今天";
-            }
-            if (date.Date == DateTime.Today.AddDays(-1).Date)
-            {
-                return "昨天";
-            }
-            return string.Format("{0}-{1}", date.Month, date.Day);
-        }
         public static string FileLenth(int bit)
         {
             if (bit < 1024)
@@ -422,14 +238,12 @@ namespace Niqiu.Core.Helpers
         /// </summary>
         /// <param name="email">The email.</param>
         /// <returns></returns>
-        public static string EnsureSubscriberEmailOrThrow(string email)
-        {
+        public static string EnsureSubscriberEmailOrThrow(string email) {
             string output = EnsureNotNull(email);
             output = output.Trim();
             output = EnsureMaximumLength(output, 255);
 
-            if (!IsValidEmail(output))
-            {
+            if(!IsValidEmail(output)) {
                 throw new PortalException("Email is not valid.");
             }
 
@@ -540,11 +354,9 @@ namespace Niqiu.Core.Helpers
         /// </summary>
         /// <param name="stringsToValidate">Array of strings to validate</param>
         /// <returns>Boolean</returns>
-        public static bool AreNullOrEmpty(params string[] stringsToValidate)
-        {
+        public static bool AreNullOrEmpty(params string[] stringsToValidate) {
             bool result = false;
-            Array.ForEach(stringsToValidate, str =>
-            {
+            Array.ForEach(stringsToValidate, str => {
                 if (string.IsNullOrEmpty(str)) result = true;
             });
             return result;
@@ -704,7 +516,7 @@ namespace Niqiu.Core.Helpers
             //return (T)Convert.ChangeType(value, typeof(T), CultureInfo.InvariantCulture);
             return (T)To(value, typeof(T));
         }
-
+        
         /// <summary>
         /// Convert enum for front-end
         /// </summary>
@@ -729,7 +541,7 @@ namespace Niqiu.Core.Helpers
         {
             //little hack here
             //always set culture to 'en-US' (Kendo UI has a bug related to editing decimal values in other cultures). Like currently it's done for admin area in Global.asax.cs
-
+            
             var culture = new CultureInfo("en-US");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
@@ -815,16 +627,36 @@ namespace Niqiu.Core.Helpers
         private static int GetRandomNum(int min, int max, List<int> ids)
         {
             Random ra = new Random(unchecked((int)DateTime.Now.Ticks));
-            var res = ra.Next(min, max);
+            var res = ra.Next(min, max+1);
             if (ids.Count == 0) return res;
+            if (res > max) res = max;
 
             while (ids.Contains(res))
             {
-                res = ra.Next(min, max);
+                res = ra.Next(min, max + 1);
+                if (res > max) res = max;
             }
 
             return res;
         }
-
+        public static string GetConnectString()
+        {
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                var txt = Environment.CurrentDirectory + "/Entity.config";
+                if (HttpContext.Current != null)
+                {
+                    txt = HostingEnvironment.MapPath("/Entity.config");
+                }
+                doc.Load(txt);
+                XmlNode node = doc.SelectSingleNode("/Root/connectionString");
+                return node.InnerText;//返回连接字符串 
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }

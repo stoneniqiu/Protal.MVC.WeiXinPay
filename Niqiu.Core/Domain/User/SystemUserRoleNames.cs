@@ -11,9 +11,15 @@ namespace Niqiu.Core.Domain.User
 
         public static string Guests { get { return "Guests"; } }
 
+        public static string General { get { return "General"; } }
+
+
         public static string Admin { get { return "Admin"; } }
 
-        public static string Employeer { get { return "Employeer"; } }
+        //public static string Employeer { get { return "Employeer"; } }
+        //public static string HuJiAdmin { get { return "HuJiAdmin"; } }
+        //public static string TrafficAdmin { get { return "TrafficAdmin"; } }
+        //public static string FireAdmin { get { return "FireAdmin"; } }
 
      //   public static string Vendors { get { return "Vendors"; } }
 
@@ -31,7 +37,5 @@ namespace Niqiu.Core.Domain.User
     {
         public static string SearchEngine { get { return "SearchEngine"; } }
         public static string BackgroundTask { get { return "BackgroundTask"; } }
-
-        public static string SystemWallet { get { return "好油菜系统钱包"; } }
     }
 }

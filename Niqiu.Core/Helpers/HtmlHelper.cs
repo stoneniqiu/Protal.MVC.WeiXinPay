@@ -96,6 +96,9 @@ namespace Niqiu.Core.Helpers
         internal static MvcHtmlString ImageHelper(HtmlHelper html, ModelMetadata metadata, IDictionary<string, object> htmlAttributes = null)
         {
             //属性值
+            if(metadata.Model==null)
+                return MvcHtmlString.Empty;
+
             var value = metadata.Model.ToString();
 
             if (string.IsNullOrEmpty(value))

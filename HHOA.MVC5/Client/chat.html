@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat</title>
+    <meta name="viewport" content="initial-scale=1,maximum-scale=1, minimum-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="Expires" content="-1">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="screen-orientation" content="portrait">
+    <meta name="x5-orientation" content="portrait">
+    <link href="../css/sm.min.css" rel="stylesheet" />
+    <link href="../css/main.css" rel="stylesheet" />
+    <script src="../Scripts/zepto.min.js"></script>
+    <script src="../Scripts/sm.js"></script>
+    <script src="../Scripts/imsdk.js"></script>
+    <script src="../Content/plupload-2.1.8/js/plupload.full.min.js"></script>
+
+</head>
+<body>
+
+    <div class="page-group">
+        <div id="loginpage" class="page page-current">
+            <div class="content sky">
+                <div class="loginbox">
+                    <div class="row-fluid">
+                        <div class="logo">
+                            <img alt="荷花机场航务部" src="../css/img/hh.png"/>
+                        </div>
+                    </div>
+                    <div class="row-fluid">
+                        <input id="uname" type="tel" placeholder="请输入手机号"/>
+                    </div>
+                    <div class="row-fluid">
+                        <input id="pwd" type="password" placeholder="请输入密码"/>
+                    </div>
+                    <div class="row-fluid">
+                        <input id="loginbt" type="button" class="button button-fill disabled" value="登录"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page" id="messagepage">
+            <header class="bar bar-nav">
+                <h1 class="title">航务部</h1>
+            </header>
+            <div class="content">
+                <div class="messages-item">
+                    <div class="avatar">
+                        <img alt="客服" src="../css/img/sf.jpg"/>
+                    </div>
+                    <div class="item-content">
+                        <div class="title-warp">
+                            <div class="name-warp">小秘书</div>
+                            <span class="time">04-27</span>
+                        </div>
+                        <div class="last-message">欢迎来到航务部~</div>
+                    </div>
+                </div>
+            </div>
+            <nav class="bar bar-tab">
+                <a class="tab-item active">消息</a>
+                <a class="tab-item" href="#friendpage">通讯录</a>
+                <a class="tab-item" href="#minepage">我</a>
+            </nav>
+        </div>
+        <div class="page" id="chatpage">
+            <header class="bar bar-nav">
+                <a class="button button-link button-nav pull-left back"  >
+                    <span class="icon icon-left"></span>
+                    返回
+                </a>
+                <h1 class="title" id="toName"></h1>
+            </header>
+            <div class="content">
+                <div id="messagesbox">
+
+                </div>
+            </div>
+            <nav class="bar bar-tab">
+                <div class="tool-warp">
+                    <div id="content" class="input-content needsclick" placeholder="请输入内容" contenteditable="true"></div>
+
+                    <a class="needsclick" id="attach">附件</a>
+                    <button class="button button-primary button-fill" id="sendbt">发送</button>
+                </div>
+            </nav>
+
+        </div>
+
+        <div class="page" id="friendpage">
+            <div class="content">
+                <div id="list">
+                    
+                </div>
+            </div>
+            <nav class="bar bar-tab">
+                <a class="tab-item" href="#messagepage">消息</a>
+                <a class="tab-item active">
+                    通讯录
+                </a>
+                <a class="tab-item" href="#minepage">我</a>
+            </nav>
+
+        </div>
+        <div class="page" id="minepage">
+            <div class="content">
+                <div class="card">
+                    <div class="card-header">航务部</div>
+                    <div class="card-content">
+                        <div class="card-content-inner">欢迎来到航务部OA</div>
+                    </div>
+                    <div class="card-footer">
+                        <div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-content">
+                        <a id="loginoutbt" class="button button-danger button-fill">注销登录</a>
+                    </div>
+                </div>
+
+
+            </div>
+            <nav class="bar bar-tab">
+                <a class="tab-item" href="#messagepage">消息</a>
+                <a class="tab-item" href="#friendpage">通讯录</a>
+                <a class="tab-item active">我</a>
+            </nav>
+
+        </div>
+        <script src="../Scripts/main.js"></script>
+
+    </div>
+</body>
+</html>

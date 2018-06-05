@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Niqiu.Core</RootNamespace>
     <AssemblyName>Niqiu.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,11 +33,13 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.dll</HintPath>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="NPOI">
       <HintPath>..\..\FireControl\FireControl\bin\NPOI.dll</HintPath>
@@ -60,9 +62,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UserAgentStringLibrary">
-      <HintPath>..\packages\UserAgentStringLibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Domain\Appointment.cs" />
@@ -76,47 +75,28 @@
     <Compile Include="Domain\Common\IDbContext.cs" />
     <Compile Include="Domain\Common\IPortalContext.cs" />
     <Compile Include="Domain\Common\MemoryCacheManager.cs" />
-    <Compile Include="Domain\Common\MenuStatistics.cs" />
     <Compile Include="Domain\Common\PerRequestCacheManager.cs" />
-    <Compile Include="Domain\Common\PhoneCode.cs" />
-    <Compile Include="Domain\Common\PortalResult.cs" />
+    <Compile Include="Domain\Common\Result.cs" />
     <Compile Include="Domain\Config\PortalConfig.cs" />
     <Compile Include="Domain\Config\PortalInfoSet.cs" />
+    <Compile Include="Domain\Customer\Customer.cs" />
+    <Compile Include="Domain\Files\FileRecord.cs" />
+    <Compile Include="Domain\IM\Friend.cs" />
+    <Compile Include="Domain\IM\Group.cs" />
+    <Compile Include="Domain\IM\Message.cs" />
+    <Compile Include="Domain\IM\Receipt.cs" />
     <Compile Include="Domain\IPagedList.cs" />
     <Compile Include="Domain\IWebHelper.cs" />
-    <Compile Include="Domain\Messages\Message.cs" />
     <Compile Include="Domain\PagedList.cs" />
-    <Compile Include="Domain\Payments\BankCard.cs" />
-    <Compile Include="Domain\Payments\Order.cs" />
-    <Compile Include="Domain\Payments\OrderType.cs" />
-    <Compile Include="Domain\Payments\PaymentLog.cs" />
-    <Compile Include="Domain\Payments\PaymentResult.cs" />
-    <Compile Include="Domain\Payments\PayType.cs" />
-    <Compile Include="Domain\Payments\Wallet.cs" />
-    <Compile Include="Domain\Payments\WalletSystemNames.cs" />
     <Compile Include="Domain\PortalException.cs" />
     <Compile Include="Domain\PortalVersion.cs" />
-    <Compile Include="Domain\Questions\Answer.cs" />
-    <Compile Include="Domain\Questions\CommentPraise.cs" />
-    <Compile Include="Domain\Questions\Commnet.cs" />
-    <Compile Include="Domain\Questions\OrderbyType.cs" />
-    <Compile Include="Domain\Questions\PraiseLog.cs" />
-    <Compile Include="Domain\Questions\Question.cs" />
-    <Compile Include="Domain\Questions\QuestionStrategy.cs" />
-    <Compile Include="Domain\Questions\RewardStrategy.cs" />
-    <Compile Include="Domain\Questions\RewardType.cs" />
-    <Compile Include="Domain\Questions\RewardUser.cs" />
-    <Compile Include="Domain\Questions\SetRewardResult.cs" />
-    <Compile Include="Domain\Questions\Shared.cs" />
-    <Compile Include="Domain\Reports\Report.cs" />
     <Compile Include="Domain\Security\DefaultPermissionRecord.cs" />
     <Compile Include="Domain\Security\FoundLost.cs" />
     <Compile Include="Domain\Security\PermissionRecord.cs" />
     <Compile Include="Domain\Security\Photo.cs" />
-    <Compile Include="Domain\User\Feeback.cs" />
-    <Compile Include="Domain\User\Firend.cs" />
-    <Compile Include="Domain\User\GradeType.cs" />
+    <Compile Include="Domain\User\Member.cs" />
     <Compile Include="Domain\User\PasswordFormat.cs" />
+    <Compile Include="Domain\User\School.cs" />
     <Compile Include="Domain\User\SystemUserRoleNames.cs" />
     <Compile Include="Domain\User\User.cs" />
     <Compile Include="Domain\User\UserExtensions.cs" />
@@ -125,6 +105,7 @@
     <Compile Include="Domain\VerifyEntity.cs" />
     <Compile Include="Helpers\BulkHelper.cs" />
     <Compile Include="Helpers\CommonHelper.cs" />
+    <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\DataTableToXls.cs" />
     <Compile Include="Helpers\EmailGateway.cs" />
     <Compile Include="Helpers\Encrypt.cs" />
@@ -137,42 +118,38 @@
     <Compile Include="Helpers\WebCache.cs" />
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Mapping\PortalEntityTypeConfiguration.cs" />
+    <Compile Include="Mapping\User\UserGroupMap.cs" />
     <Compile Include="Mapping\User\UserMap.cs" />
     <Compile Include="Mapping\User\UserRoleMap.cs" />
+    <Compile Include="Services\PortalDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Mapping\Security\PermissionRecordMap.cs" />
     <Compile Include="Services\AccoutService.cs" />
     <Compile Include="Services\ChangePasswordRequest.cs" />
-    <Compile Include="Services\Firends\FirendService.cs" />
-    <Compile Include="Services\Firends\IFirendService.cs" />
+    <Compile Include="Services\FileDbService.cs" />
     <Compile Include="Services\FormsAuthenticationService.cs" />
     <Compile Include="Services\IAccountService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IPermissionProvider.cs" />
     <Compile Include="Services\IPermissionService.cs" />
-    <Compile Include="Services\IPhoneCodeSerice.cs" />
     <Compile Include="Services\IRepository.cs" />
-    <Compile Include="Services\IStatisticService.cs" />
     <Compile Include="Services\IUserAgentHelper.cs" />
     <Compile Include="Services\IUserService.cs" />
     <Compile Include="Services\IWorkContext.cs" />
-    <Compile Include="Services\Messages\IMessageService.cs" />
-    <Compile Include="Services\Messages\MessageService.cs" />
+    <Compile Include="Services\MessageDbService.cs" />
     <Compile Include="Services\PasswordChangeResult.cs" />
-    <Compile Include="Services\Payments\IPaymentService.cs" />
-    <Compile Include="Services\Payments\PaymentService.cs" />
     <Compile Include="Services\PermissionService.cs" />
-    <Compile Include="Services\PhoneCodeSerice.cs" />
-    <Compile Include="Services\Questiones\IQuestionService.cs" />
-    <Compile Include="Services\Questiones\QuestionService.cs" />
     <Compile Include="Services\StandardPermissionProvider.cs" />
-    <Compile Include="Services\StatisticService.cs" />
+    <Compile Include="Services\UserDbService.cs" />
     <Compile Include="Services\UserLoginResults.cs" />
     <Compile Include="Services\UserRegistrationRequest.cs" />
     <Compile Include="Services\UserRegistrationResult.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

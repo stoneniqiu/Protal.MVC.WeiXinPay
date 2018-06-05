@@ -7,6 +7,7 @@
             ToTable("UserRoles");
             HasKey(cr => cr.Id);
             //HasKey(c => c.SystemName);
+            HasMany(n => n.Users);
             Property(cr => cr.Name).IsRequired().HasMaxLength(255);
             Property(cr => cr.SystemName).HasMaxLength(255);
         }

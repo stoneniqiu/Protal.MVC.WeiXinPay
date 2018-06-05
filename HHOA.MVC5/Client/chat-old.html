@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat</title>
+    <style>
+        .gray {
+            color: gray;
+            font-size: small;
+        }
+
+        #messages {
+            min-height: 200px;
+            border: 1px solid green;
+        }
+    </style>
+    <script src="jquery.js"></script>
+</head>
+<body>
+    <div id="messages">
+    </div>
+    <input type="text" id="content" value="" />
+    <button id="sendbt">发送</button>
+    <div>昵称：<input type="text" id="nickName" /> <button id="changebt">修改</button> </div>
+    <script>
+
+        var ws;
+        function initWS() {
+            ws = new WebSocket("ws://127.0.0.1:8080/Chat");
+            ws.onopen = function (e) {
+                console.log("Openened connection to websocket");
+                console.log(e);
+            };
+            ws.onclose = function () {
+                console.log("Close connection to websocket");
+                // 断线重连
+                initWS();
+            }
+
+            ws.onmessage = function (e) {
+                console.log("收到", e.data)
+                var div = $("<div>");
+                var data = JSON.parse(e.data);
+                switch (data.type) {
+                    case "1":
+                        div.html(data.name + ":" + data.content);
+                        break;
+                    case "2":
+                        div.addClass("gray");
+                        div.html("修改名称" + data.content)
+                        break;
+                    case "3":
+                        div.addClass("gray");
+                        div.html(data.content)
+                        break;
+                }
+                $("#messages").append(div);
+            }
+        }
+
+        initWS();
+        function sendMsg(msg, type) {
+            ws.send(JSON.stringify({ content: msg, type: type }));
+        }
+        $("#sendbt").click(function () {
+            var text = $("#content").val();
+            sendMsg(text, "1")
+            $("#content").val("");
+        })
+        $("#changebt").click(function () {
+            var text = $("#nickName").val();
+            sendMsg(text, "2")
+        })
+
+    </script>
+
+
+</body>
+</html>

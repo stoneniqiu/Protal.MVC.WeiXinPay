@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Download";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model List<Niqiu.Core.Domain.Files.FileRecord>
+<h2>Download</h2>
+
+@foreach (var item in Model)
+{
+    <div>
+        
+        <a href="/api/FileService/Download?guid=@item.GuId">@item.RawName</a>
+    </div>
+}

@@ -1,0 +1,217 @@
+﻿/*login*/
+.content.sky {
+    background-image: url('./img/main-bg.png');background-repeat: no-repeat;
+    background-size: cover;height: 100%;overflow: hidden;
+} 
+.loginbox{margin:170px auto;width: 80%;border-radius: 5px;padding: 25px;
+    box-shadow: 0 0 10px gray;max-width: 375px;text-align: center;
+    background-image: url('./img/bk.png');
+    background-size: cover;background-repeat: no-repeat;
+    background-color: #e6f2f8;position: relative;
+}
+.note {
+    box-shadow: rgba(0, 0, 0, 0.15) 1px 1px 6px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    border-width: 1px;
+    border-style: solid;
+    position: absolute;
+    top: 20%;
+    width: 250px;
+    left: 50%;
+    margin-left: -125px;
+    text-align: left;
+    font-size: small;
+    text-indent: 10px;
+    padding: 3px;
+}
+.note.warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
+.loginbox .row-fluid{ margin-bottom: 10px;}
+.loginbox .logo{ height: 50px;width: 50px;border-radius: 50%;overflow: hidden;margin: 0 auto;}
+.loginbox .logo img{ width: 100%;height: 100%;display: inline-block;}
+.loginbox input[type='password'],.loginbox input[type='tel'] {
+    box-sizing: border-box;
+    color: #222;
+    font-size: 14px;
+    width:100%;
+    height: 40px;
+    border: 1px solid #baced9;
+    border-radius: 3px;
+    background-color: #deeef5;
+    margin: 0;
+    padding: 10px;
+    outline: 0;
+    margin: 0 0 5px;
+}
+
+ .gray {
+            color: gray;
+            font-size: small;
+        }
+
+ 
+  .item-content .unreadnum{
+            position: absolute;right: 8px;bottom: 10px;
+            background-color: red;color: white;display: inline-block;
+            height: 1rem;min-width: 18px;border-radius: 50%;
+      line-height: 1rem;width: 1rem;
+            text-align: center;font-size: x-small;
+            opacity: 0.8;
+  }
+  
+
+/*消息*/
+.messages-item{
+    box-sizing: border-box;
+    cursor: pointer;
+    padding:2px 8px;
+    height: 70px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    position: relative;
+}
+.avatar {
+    flex: 0 0 50px;
+    margin-right: 7px;
+    width: 50px;
+    height: 50px;
+    -ms-border-radius: 50%;
+    border-radius: 50%;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgb(23, 194, 149);
+    color: white;
+    line-height: 50px;
+}
+
+.avatar img{ width: 100%;height: 100%;}
+.item-content {
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+}
+.title-warp {
+    min-width: 0;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom:5px;
+}
+.time {
+    color: #bdbebf;
+    font-size: 12px;
+}
+.last-message{
+   flex: 1 1 auto;
+    line-height: 20px;
+    height: 16px;
+    color: #7d7d7e;
+overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
+    font-size: small;
+}
+
+.firend{
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 8px;
+    height: 65px;
+    line-height: 65px;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+}
+.firend span{ display: inline-block;width: 100%;border-bottom: 1px solid gainsboro;
+    line-height: 65px;
+overflow: hidden;white-space: nowrap;text-overflow: ellipsis;
+
+}
+.bar .button .icon{ font-size: 1.1rem;}
+.input-content{
+    min-height: 32px;
+    font-size: small;
+    max-height: 88px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    color: #999999;
+    border-radius: 5px;
+    padding: 4px 7px;
+    margin-right: 132px;
+    position: relative;
+    -webkit-user-select: auto;
+    user-select: auto !important;
+    outline: none;
+    margin-top: 10px;
+    margin-left: 10px;
+    overflow: hidden;
+}
+#sendbt{ 
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 10px;
+}
+#attach{ 
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    right: 70px;
+}
+.tool-warp{ position: relative;
+}
+.input-content:after {
+    position: absolute;
+    left: 0;right: 0;
+    text-indent: 10px;
+    display: inline-block;
+    width: 100%;
+    color: #999;
+    content: attr(placeholder);
+}
+#messagesbox {
+    height: 100%;
+}
+ .messages {
+            height: calc(100% - 2.8rem);
+            border: 1px solid green;
+            display: none;
+     margin-top: 1px;
+     overflow: auto;
+    
+        }
+ .messages.active{ display: block;}
+
+ .leftsay {
+            text-align: left;margin: 10px 5px;
+        }
+        .rightsay {
+            text-align: right;margin: 10px 5px;
+        }
+        .unread{ color: #38adff;font-size: smaller;}
+        .unread.ed{color: gray}
+        .msgcontent{ display: inline-block; background-color: #38adff;
+                     border-radius: 5px;color: black;
+                     padding: 5px 11px;min-height: 21px;line-height: 1.5;
+            color: white;
+
+        }
+.msgcontent.imgbox {
+    padding: 0;background-color: transparent;
+    max-width: 50%;
+  max-height: 250px;
+    border: 1px solid red;
+}
+.msgcontent.imgbox img {
+    max-width: 100%;
+       max-height: 250px;
+}
+        .leftsay .msgcontent {
+            border: 1px solid #e1e0e4;
+            background: white;
+            color: #333;
+        }
+ .unlist{ cursor: pointer;}

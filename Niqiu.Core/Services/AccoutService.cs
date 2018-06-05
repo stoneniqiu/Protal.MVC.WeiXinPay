@@ -44,8 +44,6 @@ namespace Niqiu.Core.Services
                 return UserLoginResults.Deleted;
             if (!user.Active)
                 return UserLoginResults.NotActive;
-            if (user.IsIllegal)
-                return UserLoginResults.IsIllegal;
             //only registered can login
             //if (!user.IsRegistered())
             //    return UserLoginResults.NotRegistered;
@@ -56,8 +54,7 @@ namespace Niqiu.Core.Services
 
             //save last login date
             user.LastLoginDateUtc = DateTime.Now;
-          //  _userService.UpdateUser(user);
-
+            _userService.UpdateUser(user);
             return UserLoginResults.Successful;
         }
 
@@ -128,12 +125,13 @@ namespace Niqiu.Core.Services
          
               if (isMobile)
               {
-                  request.User = _userService.GetUserByMobile(request.SchoolNumber)??new User();
+                  request.User = _userService.GetUserBySchoolNumber(request.SchoolNumber)??new User();
               }
             request.User.Username = request.Username;
             request.User.Email = request.Email;
             request.User.PasswordFormat = request.PasswordFormat;
             request.User.Mobile = request.Mobile;
+            request.User.SchoolNumber = request.SchoolNumber;
             request.User.Gender = request.Gender;
             request.User.ImgUrl = "/Content/user_img.jpg";
             request.User.Password = Encrypt.GetMd5Code(request.Password);

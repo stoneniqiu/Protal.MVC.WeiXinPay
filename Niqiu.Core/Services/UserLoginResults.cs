@@ -26,9 +26,5 @@
         /// Customer not registered 
         /// </summary>
         NotRegistered = 6,
-       /// <summary>
-       /// 非法用户 账户被禁
-       /// </summary>
-        IsIllegal = 7,
     }
 }

@@ -9,12 +9,12 @@ namespace Niqiu.Core.Domain.Security
 {
     public class Photo : VerifyEntity
     {
-        [Required(ErrorMessage = "请输入事物")]
+        //[Required(ErrorMessage = "请输入事物")]
         [Display(Name = "事物")]
         public string Stuffy { get; set; }
 
-        [Required(ErrorMessage = "请输入状况")]
-        [Display(Name = "状况")]
+        [Required(ErrorMessage = "请输入事件")]
+        [Display(Name = "事件")]
         public string Action { get; set; }
 
         [Required(ErrorMessage = "请输入地点")]

@@ -149,44 +149,6 @@ namespace Niqiu.Core.Helpers
             return picturePath;
         }
 
-
-        public static Bitmap RotateImage(Stream sm)
-        {
-            Image img = Image.FromStream(sm);
-            var exif = img.PropertyItems;
-            byte orien = 0;
-            var item = exif.Where(m => m.Id == 274).ToArray();
-            if (item.Length > 0)
-                orien = item[0].Value[0];
-            switch (orien)
-            {
-                case 2:
-                    img.RotateFlip(RotateFlipType.RotateNoneFlipX);//horizontal flip  
-                    break;
-                case 3:
-                    img.RotateFlip(RotateFlipType.Rotate180FlipNone);//right-top  
-                    break;
-                case 4:
-                    img.RotateFlip(RotateFlipType.RotateNoneFlipY);//vertical flip  
-                    break;
-                case 5:
-                    img.RotateFlip(RotateFlipType.Rotate90FlipX);
-                    break;
-                case 6:
-                    img.RotateFlip(RotateFlipType.Rotate90FlipNone);//right-top  
-                    break;
-                case 7:
-                    img.RotateFlip(RotateFlipType.Rotate270FlipX);
-                    break;
-                case 8:
-                    img.RotateFlip(RotateFlipType.Rotate270FlipNone);//left-bottom  
-                    break;
-                default:
-                    break;
-            }
-            return (Bitmap)img;
-        }
-
         /// <summary>
         /// 存放缩略图
         /// </summary>
@@ -253,7 +215,7 @@ namespace Niqiu.Core.Helpers
             }
             var ob = new Bitmap(dWidth, dHeight);
             var g = Graphics.FromImage(ob);
-            g.Clear(Color.Transparent);
+            g.Clear(Color.WhiteSmoke);
             g.CompositingQuality = CompositingQuality.HighQuality;
             g.SmoothingMode = SmoothingMode.HighQuality;
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -268,7 +230,7 @@ namespace Niqiu.Core.Helpers
             try
             {
                 var arrayICI = ImageCodecInfo.GetImageEncoders();
-                var jpegICIinfo = arrayICI.FirstOrDefault(t => t.FormatDescription.Equals("PNG"));
+                var jpegICIinfo = arrayICI.FirstOrDefault(t => t.FormatDescription.Equals("JPEG"));
                 if (jpegICIinfo != null)
                 {
                     ob.Save(dFile, jpegICIinfo, ep);//dFile是压缩后的新路径
@@ -408,7 +370,7 @@ namespace Niqiu.Core.Helpers
             }
 
             //封装文本布局信息（如对齐、文字方向和 Tab 停靠位），显示操作（如省略号插入和国家标准 (National) 数字替换）和 OpenType 功能。   
-            var strFormat = new StringFormat { Alignment = StringAlignment.Center };
+            var strFormat = new StringFormat {Alignment = StringAlignment.Center};
 
             //定义需要印的文字居中对齐   
 

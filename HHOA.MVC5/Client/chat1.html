@@ -1,0 +1,311 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Chat</title>
+    <style>
+
+        </style>
+    <link href="../css/main.css" rel="stylesheet"/>
+    <script src="../Scripts/jquery-3.3.1.min.js"></script>
+    <script src="../Scripts/imsdk.js"></script>
+    <style>
+              .messages {
+            min-height: 200px;
+            border: 1px solid green;
+            display: none;
+        }
+        #messagesbox {
+             min-height: 210px;
+        }
+        .messages.active{ display: block;}
+        .warper{ position: relative;height: 100%;width: 100%;}
+        #list{ position: absolute;left: 0;width: 200px;}
+        #chatbox{ margin-left: 200px;}
+        .firend{ padding: 5px;border-bottom: 1px solid gainsboro;cursor: pointer;
+            position: relative;
+        }
+        .firend:hover {
+            color: #00bfff;
+        }
+        .firend .unreadnum{
+            position: absolute;right: 5px;bottom: 2px;
+            background-color: red;color: white;display: inline-block;
+            height: 18px;min-width: 18px;border-radius: 50%;
+            text-align: center;font-size: smaller;
+            padding: 3px;line-height: 20px;
+            opacity: 0.8;
+        }
+        .header{ min-height: 32px;width: 100%;font-weight: bold;text-align: right;}
+        .leftsay {
+            text-align: left;margin: 10px 5px;
+        }
+        .rightsay {
+            text-align: right;margin: 10px 5px;
+        }
+        .unread{ color: #38adff;font-size: smaller;}
+        .unread.ed{color: gray}
+        .msgcontent{ display: inline-block; background-color: #38adff;
+                     border-radius: 5px;color: black;
+                     padding: 5px 11px;min-height: 21px;line-height: 1.5;
+            color: white;
+
+        }
+        .leftsay .msgcontent {
+            border: 1px solid #e1e0e4;
+            background: white;
+            color: #333;
+        }
+        .unlist{ cursor: pointer;}
+.headtop {
+    padding-top: 1rem;
+}
+    </style>
+</head>
+
+<body>
+<div class="warper">
+    <div id="list">
+
+    </div>
+    <div id="chatbox">
+        <div class="header"></div>
+        <div id="messagesbox">
+
+        </div>
+        <input type="text" id="content" value="" />
+        <button id="sendbt">发送</button>
+    </div>
+</div>
+
+<div id="loginbox">
+    <input type="text" id="uname" value="stoneniqiu" />
+    <input type="password" id="pwd"/>
+    <input type="button" id="loginbt" value="登录"/>
+</div>
+<script>
+    var viewkey = "chatview", $box,warp,word;
+    var currentToId;
+    var msgscache = {};
+    //存储群成员信息 主要是得到用户人数
+    var groupinfo = {};
+    //自己发的群消息 用来处理群回执
+    var selfgroupmsg = {};
+
+    function rightsay(content, msgid) {
+        $box = $(".messages.active");
+        var rawmsg = selfgroupmsg[msgid];
+        var txt = "未读";
+        var gclass = "";
+        if (rawmsg) {
+            var ginfo = groupinfo[rawmsg.receiverid];
+            //总的人数
+            var total = ginfo.Users.length-1;
+            txt = total + "人未读";
+            gclass = "unlist";//表示显示未读人名单的
+        }
+
+        word = $("<div class='msgcontent'>").html(content);
+        var span = $("<div class='unread'>").html(txt).addClass(gclass).attr("data-gid", currentToId).attr("data-msgid", msgid);
+        warp = $("<div class='rightsay'>").attr("id", msgid).append(word).append(span);
+        //显示上去，
+        $box.append(warp);
+    }
+
+    function leftsay(boxid, content, msgid) {
+        //这个view不一定打开了。
+        $box = $("#" + boxid);
+        //可以先放到隐藏的页面上去，
+        word = $("<div class='msgcontent'>").html(content);
+        warp = $("<div class='leftsay'>").attr("id", msgid).append(word);
+        if ($box.length != 0) {
+            $box.append(warp);
+        } else {
+            $box = $("<div class='messages' id=" + boxid + ">");
+            $box.append(warp);
+            $("#messagesbox").append($box);    
+        }
+    }
+    //未读标记
+    function unreadmark(friendId, count) {
+        $("#" + friendId).find("span").remove();
+        if (count == 0) {
+            return;
+        }
+        var span = $("<span class='unreadnum' >").html(count);
+        $("#"+friendId).append(span);
+    }
+
+    function readmsg(data) {
+        //区分是单聊还是群聊
+        //单聊就直接是已读
+        var msgid = data.msgid;
+        var rawmsg = selfgroupmsg[msgid];
+        if (!rawmsg) {
+            $("#" + msgid).find(".unread").html("已读").addClass("ed");
+        }
+        else {
+            rawmsg.list.push(data);
+            //得到了这个群的信息
+            var ginfo = groupinfo[rawmsg.receiverid];
+            //总的人数
+            var total = ginfo.Users.length;
+            //找到原始的消息
+            //已读的人数
+            var readcount = rawmsg.list.length;
+            //未读人数
+            var unread = total - readcount-1;//除去自己
+            var txt = "已读";
+            if (unread != 0) {
+                txt = unread + "人未读";
+                $("#" + msgid).find(".unread").html(txt);
+            } else {
+                $("#" + msgid).find(".unread").html(txt).addClass("ed");
+            }
+        }
+    }
+
+    sdk.on("messages", function (data) {
+        if (sdk.isSelf(data.senderid)) {
+            //自己说的
+            //肯定是当前对话
+            //照理说还要判断是不是当前的对话框
+            data.list = [];
+            if (data.isgroup)
+            selfgroupmsg[data.msgid] = data;
+            rightsay(data.content, data.msgid);
+        } else {
+            //别人说的
+            //不一定是当前对话，就要从ReceiverId判断。
+            var _toid = data.senderid;
+            if (!sdk.isSelf(data.receiverid)) {
+                //接受者不是自己 说明是群消息
+                _toid = data.receiverid;
+            }
+            var boxid = _toid + viewkey;
+
+            //如果是当前会话就发送已读回执
+            if (_toid == currentToId) {
+                sdk.sendReceipt(data.senderid, data.msgid);
+            } else {
+                if (!msgscache[_toid]) {
+                    msgscache[_toid] = [];
+                }
+                //存入未读列表
+                msgscache[_toid].push(data);
+                unreadmark(_toid, msgscache[_toid].length);
+            }
+
+            leftsay(boxid, data.content, data.msgid);
+
+        }
+
+    });
+
+    sdk.on("receipts", function (data) {
+        readmsg(data);
+    })
+    sdk.init();
+
+    $("#loginbt").click(function() {
+        sdk.login($("#uname").val(), $("#pwd").val(),function(res) {
+            if (res.Code == "001") {
+                $("#loginbox").hide();
+                getList();
+            }
+        });
+    })
+    function getList() {
+        sdk.getFriends(function(data) {
+            var $list = $("#list");
+            $list.html("");
+            for (var i = 0; i < data.Data.length; i++) {
+                var item = data.Data[i];
+                //默认选中第一个
+                if (i == 0) activeUser(item.Name,item.Id);
+                var div = $("<div class='firend'>").attr("id", item.Id).html(item.Name);
+                $list.append(div);
+                if (item.IsGroup) {
+                    //说明是群
+                    groupinfo[item.Id] = item;
+                }
+            }
+        });
+    }
+    if (localStorage.token) {
+        sdk.getUserInfo(localStorage.token, getList);
+        //加载完列表之后的一件事就是要获取未读的消息条数
+    }
+
+    $("#sendbt").click(function() {
+        var content = $("#content").val();
+        if (!!content) {
+            sdk.sendTo(currentToId, content);
+            $("#content").val("");
+        }
+    })
+
+    $(document).on("click", "#list .firend", function () {
+        activeUser($(this).html(),$(this).attr("id"));
+    });
+    $(document).on("click", ".unlist", function () {
+        //拿到群信息
+        //群id
+        var gid = $(this).data("gid");
+        var msgid = $(this).data("msgid");
+        var ginfo = groupinfo[gid];
+        var rawmsg = selfgroupmsg[msgid];
+        var list = [];
+        for (var i = 0; i < ginfo.Users.length; i++) {
+            var user = ginfo.Users[i];
+            if (!sdk.isSelf(user.UserGuid)) {
+                user.isRead = false;
+                for (var j = 0; j < rawmsg.list.length; j++) {
+                    var item = rawmsg.list[j];
+                    if (item.userid == user.UserGuid) {
+                        user.isRead = true;
+                        user.readTime = item.createtime;
+                    }
+                }
+                list.push(user);
+            }
+        }
+        console.log(list);
+        //拿到已读的信息
+    });
+   
+ 
+    function activeUser(userName,userid) {
+        //先查找有无对应的聊天页面
+        if (userid == currentToId) return;
+
+        $(".header").html(userName);
+        currentToId = userid;
+        var divId = userid + viewkey;
+        var $div = $("#"+divId);
+        if ($div.length == 0) {
+            $(".messages").removeClass("active");
+            //没有就再创建一个
+            $div = $("<div class='messages active' id=" + divId + ">");
+            $("#messagesbox").append($div);
+        } else {
+            $div.siblings().removeClass("active").end().addClass("active");
+        }
+
+        //还要做一个工作 就是需要把未读的消息 发送已读回执到服务器
+        var unreads = msgscache[userid];
+        if (unreads && unreads.length > 0) {
+            for (var i = 0; i < unreads.length; i++) {
+                var item = unreads[i];
+                sdk.sendReceipt(item.senderid, item.msgid);
+            }
+            msgscache[userid] = [];
+        }
+        unreadmark(userid,0);
+    }
+
+</script>
+
+
+</body>
+</html>

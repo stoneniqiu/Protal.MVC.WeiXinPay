@@ -14,7 +14,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Niqiu.Core.Domain;
 using Niqiu.Core.Domain.User;
 
@@ -42,6 +41,7 @@ namespace Niqiu.Core.Services
         /// <param name="user">The user.</param>
         void InsertUser(User user);
 
+        void AddSchoolName(string name);
 
         /// <summary>
         /// Updates the user.
@@ -83,17 +83,19 @@ namespace Niqiu.Core.Services
         User GetUserByUsername(string username);
 
         User GetUserByMobile(string mobile);
+        User GetUserBySchoolNumber(string schoolNumber);
+        bool CheckUserBySchoolNumberOrIdCard(string schoolNumber, string idCard);
 
         /// <summary>
         /// Gets all users.
         /// </summary>
         /// <param name="email">The email.</param>
+        /// <param name="schoolName"></param>
         /// <param name="username">The username.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
         /// <returns>IPagedList{User}.</returns>
-        IPagedList<User> GetAllUsers(string username = "",string email="",int pageIndex = 0, int pageSize = 2147483647);
-       
+        IPagedList<User> GetAllUsers(string schoolName = "", string username = "",string email="",int pageIndex = 0, int pageSize = 2147483647);
         /// <summary>
         /// Gets the online users.
         /// </summary>
@@ -130,12 +132,6 @@ namespace Niqiu.Core.Services
         User InsertGuestUser();
 
         #endregion
-
-        void Feeback(User user, string content);
-
-        bool SetPaymentPassword(int userid, string password);
-        bool ValidPaymentPassword(int userid, string password);
-        User GetUserByOpenId(string openId);
     }
 }
 
